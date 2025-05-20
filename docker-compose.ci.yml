@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      target: testing
+    environment:
+      - FLASK_ENV=testing
+      - FLASK_APP=app
+      - DATABASE_URL=mysql://apiuser:${DB_PASSWORD}@db:3306/carmonitoring_test
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=carmonitoring_test
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=apiuser
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    command: --default-authentication-plugin=mysql_native_password

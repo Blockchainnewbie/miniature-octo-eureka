@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      target: development
+    volumes:
+      - ./backend:/app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=app
+      - DATABASE_URL=mysql://apiuser:${DB_PASSWORD}@db:3306/carmonitoring
+    depends_on:
+      - db
+
+  frontend:
+    build: 
+      context: ./frontend
+      target: development
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "8080:8080"
+    environment:
+      - VITE_API_URL=http://localhost:5000
+
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=carmonitoring
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=apiuser
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mysql_data:
