@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app.extensions import db
 from argon2 import PasswordHasher
 from argon2.exceptions import VerifyMismatchError
@@ -25,7 +25,7 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True, nullable=False)
     _password = db.Column('password_hash', db.String(255), nullable=False)
     role = db.Column(db.Enum(UserRole), nullable=False, default=UserRole.user)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
 
     refresh_tokens = db.relationship(
         "RefreshToken",

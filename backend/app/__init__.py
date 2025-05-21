@@ -1,33 +1,37 @@
+"""
+Haupt-Initialisierungsmodul für die Flask-Anwendung.
+
+Dieses Modul enthält die App-Factory und stellt die zentrale Konfiguration
+und Initialisierung der Flask-Anwendung bereit.
+"""
 from flask import Flask  # Import Flask für die Webanwendung
-from flask_sqlalchemy import SQLAlchemy  # ORM für Datenbankoperationen
-from flask_jwt_extended import JWTManager  # Für JWT-basierte Authentifizierung
 from flask_cors import CORS  # Cross-Origin Resource Sharing Unterstützung
-from config import Config  # Importiere Konfigurationseinstellungen
+from app.config import config_by_name  # Importiere Konfigurationseinstellungen
+from app.extensions import db, jwt, migrate, init_extensions # Importiere die Erweiterungen
 
-# Initialisiere Erweiterungen ohne App-Kontext
-db = SQLAlchemy()  # Datenbank-Instanz
-jwt = JWTManager()  # JWT-Manager-Instanz
+# Diese Funktion wurde in app/extensions.py verschoben und wird von dort importiert
 
-def create_app(config_class=Config):
+def create_app(config_name='default'):
     """
-    Factory-Funktion zur Erstellung und Konfiguration der Flask-Anwendung.
+    App-Factory-Funktion, die die Flask-Anwendung erstellt und konfiguriert.
     
     Args:
-        config_class: Konfigurationsklasse für die Anwendung (Standard: Config)
+        config_name: Name der zu verwendenden Konfiguration (development, testing, production)
         
     Returns:
-        Flask: Konfigurierte Flask-Anwendungsinstanz
+        Die konfigurierte Flask-App
     """
-    app = Flask(__name__)  # Erstelle Flask-App
-    app.config.from_object(config_class)  # Lade Konfiguration aus der angegebenen Klasse
-
-    # Initialisiere Erweiterungen mit App-Kontext
-    db.init_app(app)  # Verbinde SQLAlchemy mit der App
-    jwt.init_app(app)  # Verbinde JWT-Manager mit der App
-    CORS(app)  # Aktiviere CORS für alle Routen
-
-    # Registriere Blueprints für modulare Struktur
-    from app.api import bp as api_bp  # Importiere API Blueprint
-    app.register_blueprint(api_bp, url_prefix='/api')  # Registriere mit Präfix '/api'
-
-    return app  # Gebe konfigurierte App zurück
+    app = Flask(__name__)
+    app.config.from_object(config_by_name[config_name])  # Nutze config_name als Schlüssel
+    
+    print(f"DEBUG: Verwende Konfiguration {config_name}")
+    print(f"DEBUG: SQLALCHEMY_DATABASE_URI: {app.config.get('SQLALCHEMY_DATABASE_URI')}")
+    
+    # Erweiterungen initialisieren
+    init_extensions(app)
+    
+    # Blueprints registrieren
+    from app.auth import auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    
+    return app

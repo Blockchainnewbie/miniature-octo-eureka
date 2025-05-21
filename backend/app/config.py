@@ -10,8 +10,8 @@ import os
 from datetime import timedelta
 from dotenv import load_dotenv
 from flask import Flask
-from app.extensions import init_extensions
-from app.config import config_by_name
+import pytest
+from app.extensions import db
 
 # Lade Umgebungsvariablen aus .env-Datei
 load_dotenv()
@@ -52,11 +52,13 @@ class TestingConfig(Config):
     
     Aktiviert den Test-Modus und verwendet eine separate Test-Datenbank,
     um die Hauptdatenbank nicht zu beeinträchtigen.
-    Datenbank muss noch eingerichtet werden, wenn später geteset wird.
+    SQLite In-Memory-Datenbank für einfaches Testen ohne externe DB-Abhängigkeiten.
     """
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL',
-        'mysql+pymysql://user:password@db/carmonitoring_test')
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    # CSRF-Schutz für Tests deaktivieren
+    JWT_COOKIE_CSRF_PROTECT = False
+
 
 class ProductionConfig(Config):
     """
@@ -76,6 +78,17 @@ config_by_name = {
     'production': ProductionConfig,
     'default': DevelopmentConfig
 }
+
+def init_extensions(app):
+    """
+    Initialisiert alle Flask-Erweiterungen für die Anwendung.
+    
+    Args:
+        app: Die Flask-Anwendungsinstanz
+    """
+    # Hier können Erweiterungen wie SQLAlchemy, JWT, etc. initialisiert werden
+    # Beispiel: db.init_app(app)
+    pass
 
 def create_app(config_name='default'):
     """
@@ -98,3 +111,30 @@ def create_app(config_name='default'):
     app.register_blueprint(auth_bp, url_prefix='/api/auth')  # Registriere ihn unter /api/auth
     
     return app
+
+@pytest.fixture
+def app():
+    """Erstellt und konfiguriert eine Flask-App für Tests"""
+    app = create_app('testing')
+    print(f"DEBUGGING: Test-App erstellt mit ID {id(app)}")
+    
+    # App-Kontext hinzufügen
+    with app.app_context():
+        # Stelle sicher, dass die Datenbank existiert
+        db.create_all()
+        print("DEBUGGING: Datenbank-Tabellen erstellt")
+        yield app
+        # Aufräumen
+        db.session.remove()
+        db.drop_all()
+        print("DEBUGGING: Datenbank aufgeräumt")
+
+@pytest.fixture
+def client(app):
+    """Erstellt einen Test-Client"""
+    return app.test_client()
+
+# Ein einfacher Test zum Start
+def test_app_exists(app):
+    """Test, ob die App erstellt wird"""
+    assert app is not None

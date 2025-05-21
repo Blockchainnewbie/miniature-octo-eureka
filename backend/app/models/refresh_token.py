@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app.extensions import db
 import uuid
 
@@ -15,7 +15,7 @@ class RefreshToken(db.Model):
     token_id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     token = db.Column(db.String(255), nullable=False)
-    issued_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    issued_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     expires_at = db.Column(db.DateTime, nullable=False)
     revoked = db.Column(db.Boolean, default=False, nullable=False)
     
@@ -29,7 +29,7 @@ class RefreshToken(db.Model):
         Returns:
             bool: True wenn abgelaufen, sonst False
         """
-        return datetime.utcnow() > self.expires_at
+        return datetime.now(timezone.utc) > self.expires_at
     
     def is_valid(self):
         """

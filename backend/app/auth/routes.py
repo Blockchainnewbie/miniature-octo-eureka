@@ -24,6 +24,25 @@ def test_route():
     """Einfache Testroute um zu prüfen, ob der Blueprint funktioniert."""
     return jsonify({"message": "Auth-Blueprint funktioniert!"})
 
+@auth_bp.route('/protected', methods=['GET'])
+@jwt_required()  # Diese Route erfordert einen gültigen Access-Token
+def protected():
+    """
+    Geschützte Test-Route, die nur mit gültigem Access-Token zugänglich ist.
+    
+    Diese Route demonstriert, wie JWT-geschützte Endpunkte funktionieren.
+    Der Decorator @jwt_required() stellt sicher, dass nur Anfragen mit
+    einem gültigen Access-Token akzeptiert werden.
+    
+    Returns:
+        JSON-Response mit Benutzerinformationen des authentifizierten Users
+    """
+    # current_user wird automatisch von flask_jwt_extended geladen
+    return jsonify({
+        "message": "Du hast Zugriff auf eine geschützte Route",
+        "user": current_user.to_dict() if current_user else {"id": get_jwt_identity()}
+    })
+
 @auth_bp.route('/admin/users', methods=['POST'])
 @jwt_required()  # Nur für angemeldete Benutzer zugänglich
 def create_user():
@@ -137,8 +156,73 @@ def login():
         httponly=True,           # Verhindert Zugriff durch JavaScript (XSS-Schutz)
         secure=current_app.config['JWT_COOKIE_SECURE'],  # True in Produktion (HTTPS-only)
         samesite=current_app.config.get('JWT_COOKIE_SAMESITE', 'Lax'),  # CSRF-Schutz
-        max_age=current_app.config['JWT_REFRESH_TOKEN_EXPIRES'].total_seconds()  # Lebenszeit
+        max_age=int(current_app.config['JWT_REFRESH_TOKEN_EXPIRES'].total_seconds())  # Lebenszeit als Integer
     )
     
     return response
 
+@auth_bp.route('/refresh', methods=['POST'])
+@jwt_required(refresh=True)  # Diese Route erfordert einen gültigen Refresh-Token
+def refresh():
+    """
+    Erneuert den Access-Token mit einem gültigen Refresh-Token.
+    
+    Diese Route nutzt den im Cookie gespeicherten Refresh-Token, um einen
+    neuen Access-Token zu generieren. Der Benutzer muss sich nicht erneut
+    mit Benutzername/Passwort anmelden.
+    
+    Der Decorator @jwt_required(refresh=True) stellt sicher, dass nur
+    Anfragen mit einem gültigen Refresh-Token akzeptiert werden.
+    
+    Returns:
+        JSON-Response mit neuem Access-Token oder Fehlermeldung
+    """
+    # Identität (Benutzer-ID) aus dem Refresh-Token extrahieren
+    user_id = get_jwt_identity()
+    
+    # Optional: Benutzer aus der Datenbank abrufen
+    # Dies ist nützlich, um zu überprüfen, ob der Benutzer noch aktiv ist
+    user = User.query.filter_by(id=user_id).first()
+    if not user:
+        return jsonify({"error": "Benutzer nicht gefunden"}), 401
+    
+    # Neuen Access-Token mit derselben Identität erstellen
+    new_access_token = create_access_token(identity=user_id)
+    
+    # Erfolgsantwort mit dem neuen Access-Token zurückgeben
+    return jsonify({
+        "message": "Token erfolgreich erneuert",
+        "access_token": new_access_token
+    })
+
+@auth_bp.route('/logout', methods=['POST'])
+@jwt_required(refresh=True)  # Diese Route erfordert einen gültigen Refresh-Token
+def logout():
+    """
+    Meldet einen Benutzer ab und widerruft seinen Refresh-Token.
+    
+    Diese Route führt zwei wichtige Aktionen durch:
+    1. Sie markiert den Refresh-Token in der Datenbank als widerrufen,
+    sodass er nicht mehr für Token-Erneuerungen verwendet werden kann
+    2. Sie löscht das Refresh-Token-Cookie auf dem Client-Gerät
+    
+    Dies bietet einen sicheren Logout-Mechanismus und verhindert die
+    weitere Nutzung des Tokens.
+    
+    Returns:
+        JSON-Response mit Bestätigung der Abmeldung
+    """
+    # Token-Identifikator aus dem JWT extrahieren
+    jti = get_jwt()["jti"]
+    
+    # Token in der Datenbank als widerrufen markieren, falls vorhanden
+    token = RefreshToken.query.filter_by(token=jti).first()
+    if token:
+        token.revoked = True
+        db.session.commit()
+    
+    # Response erstellen und Cookie löschen
+    response = jsonify({"message": "Abmeldung erfolgreich"})
+    response.delete_cookie('refresh_token_cookie')
+    
+    return response
