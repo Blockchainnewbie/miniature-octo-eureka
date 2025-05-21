@@ -94,6 +94,7 @@ def create_app(config_name='default'):
     init_extensions(app)
     
     # Blueprints registrieren
-    # Hier werden wir später den auth_blueprint registrieren
+    from app.auth import auth_bp  # Importiere den Auth-Blueprint
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')  # Registriere ihn unter /api/auth
     
     return app
