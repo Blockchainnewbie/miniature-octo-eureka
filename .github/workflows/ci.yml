@@ -61,4 +61,4 @@ jobs:
       - name: Shutdown containers
         if: always()
         run: |
-          docker-compose -f docker-compose
+          docker-compose -f docker-compose.ci.yml down
