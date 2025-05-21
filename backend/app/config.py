@@ -1,38 +1,99 @@
+"""
+Konfigurationsmodul für die Flask-Anwendung.
+
+Dieses Modul definiert verschiedene Konfigurationsklassen für unterschiedliche
+Umgebungen (Entwicklung, Test, Produktion) und stellt allgemeine sowie 
+JWT-spezifische Einstellungen bereit.
+"""
+
 import os
+from datetime import timedelta
 from dotenv import load_dotenv
+from flask import Flask
+from app.extensions import init_extensions
+from app.config import config_by_name
 
 # Lade Umgebungsvariablen aus .env-Datei
 load_dotenv()
 
-class Config(object):
-    """Basis-Konfigurationsklasse für die Anwendung."""
+class Config:
+    """
+    Basis-Konfigurationsklasse mit gemeinsamen Einstellungen für alle Umgebungen.
     
-    # Secret Key für JWT-Generierung
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'geheim-schluessel-muss-in-produktion-geaendert-werden'
-    
-    # MySQL-Konfiguration
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql://apiuser:{}@db:3306/carmonitoring'.format(os.environ.get('DB_PASSWORD', 'password'))
+    Enthält allgemeine Flask-Konfigurationen sowie spezifische Einstellungen
+    für die JWT-Authentifizierung wie Token-Lebenszeiten und Cookie-Sicherheit.
+    """
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key')
+    # Allgemeine Konfiguration
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT-Konfiguration
-    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or SECRET_KEY
-    JWT_ACCESS_TOKEN_EXPIRES = 3600  # 1 Stunde
-    JWT_REFRESH_TOKEN_EXPIRES = 86400 * 30  # 30 Tage
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', SECRET_KEY)  # Separate Secret für JWT
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)  # Access-Tokens: 15 Minuten
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)    # Refresh-Tokens: 30 Tage
+    JWT_TOKEN_LOCATION = ['headers', 'cookies']       # Wo nach Tokens gesucht wird
+    JWT_COOKIE_SECURE = False                         # In Produktion auf True setzen
+    JWT_COOKIE_CSRF_PROTECT = True                    # CSRF-Schutz für Cookies
+    JWT_COOKIE_SAMESITE = 'Lax'                       # SameSite-Richtlinie
 
 class DevelopmentConfig(Config):
-    """Entwicklungskonfiguration mit Debug-Modus."""
+    """
+    Konfiguration für die Entwicklungsumgebung.
+    
+    Aktiviert Debug-Modus und verwendet die lokale Entwicklungsdatenbank.
+    """
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
+        'mysql+pymysql://user:password@db/carmonitoring')
 
 class TestingConfig(Config):
-    """Testkonfiguration mit Testdatenbank."""
+    """
+    Konfiguration für die Testumgebung.
+    
+    Aktiviert den Test-Modus und verwendet eine separate Test-Datenbank,
+    um die Hauptdatenbank nicht zu beeinträchtigen.
+    Datenbank muss noch eingerichtet werden, wenn später geteset wird.
+    """
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql://sonny:{}@db:3306/carmonitoring_test'.format(os.environ.get('DB_PASSWORD', 'password'))
-    
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL',
+        'mysql+pymysql://user:password@db/carmonitoring_test')
+
 class ProductionConfig(Config):
-    """Produktionskonfiguration."""
-    DEBUG = False
+    """
+    Konfiguration für die Produktionsumgebung.
     
-    # Sicherheitsrelevante Einstellungen
-    PROPAGATE_EXCEPTIONS = True
+    Verwendet erhöhte Sicherheitseinstellungen wie HTTPS-Only-Cookies
+    und bezieht die Datenbank-URL aus Umgebungsvariablen.
+    """
+    # In der Produktion müssen sichere Einstellungen verwendet werden
+    JWT_COOKIE_SECURE = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+
+# Konfiguration je nach Umgebung auswählen
+config_by_name = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+    'default': DevelopmentConfig
+}
+
+def create_app(config_name='default'):
+    """
+    App-Factory-Funktion, die die Flask-Anwendung erstellt und konfiguriert.
+    
+    Args:
+        config_name: Name der zu verwendenden Konfiguration (development, testing, production)
+        
+    Returns:
+        Die konfigurierte Flask-App
+    """
+    app = Flask(__name__)
+    app.config.from_object(config_by_name[config_name])
+    
+    # Erweiterungen initialisieren
+    init_extensions(app)
+    
+    # Blueprints registrieren
+    # Hier werden wir später den auth_blueprint registrieren
+    
+    return app
