@@ -1,6 +1,6 @@
 # Dockerfile for a Flask application
 
-FROM python:3.10-slim as base
+FROM python:3.12 as base
 
 WORKDIR /app
 ENV PYTHONPATH=/app
