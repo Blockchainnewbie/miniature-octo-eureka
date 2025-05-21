@@ -1,13 +1,13 @@
 # Dockerfile for a Flask application
 
-FROM python:3.12 as base
+FROM 3.12-slim as base
 
 WORKDIR /app
 ENV PYTHONPATH=/app
 ENV FLASK_APP=app
 
 COPY requirements.txt .
-RUN apt-get update && apt-get install -y default-libmysqlclient-dev build-essential libpython3.10-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev build-essential libpython3.12-dev --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
