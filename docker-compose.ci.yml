@@ -11,7 +11,7 @@ services:
       - DATABASE_URL=mysql://apiuser:${DB_PASSWORD}@db:3306/carmonitoring_test
     depends_on:
       - db
-
+    
   db:
     image: mysql:8.0
     environment:
@@ -20,3 +20,4 @@ services:
       - MYSQL_USER=apiuser
       - MYSQL_PASSWORD=${DB_PASSWORD}
     command: --default-authentication-plugin=mysql_native_password
+    

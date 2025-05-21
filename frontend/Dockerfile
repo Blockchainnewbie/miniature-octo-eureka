@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# Dockerfile for a Node.js application with Nginx
 
 FROM node:16-slim as base
 

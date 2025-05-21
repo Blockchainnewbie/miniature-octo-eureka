@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4
+# Dockerfile for a Flask application
 
 FROM python:3.10-slim as base
 
