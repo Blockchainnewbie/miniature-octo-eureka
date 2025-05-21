@@ -6,6 +6,8 @@ __pycache__/
 # Node Modules
 frontend/node_modules
 
+img_store
+
 # C extensions
 *.so
 
