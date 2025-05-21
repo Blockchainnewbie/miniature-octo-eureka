@@ -2,6 +2,13 @@
 
 ## 22. Mai 2025
 
+### Erledigte Aufgaben (21. Mai)
+- [x] Behebung des CI-Workflows:
+  - [x] `flask-migrate` in requirements.txt hinzugefügt
+  - [x] Health-Check-Endpunkt `/api/health` implementiert
+  - [x] Debug-Schritt zur CI hinzugefügt, um installierte Pakete zu überprüfen
+  - [x] Port-Konfiguration in docker-compose.ci.yml korrigiert
+
 ### Sicherheit
 - [ ] Unterschiedliche Datenbankpasswörter einrichten:
   - [ ] Root-Benutzer (MYSQL_ROOT_PASSWORD) und reguläre Benutzer (MYSQL_PASSWORD) sollten unterschiedliche Passwörter verwenden
@@ -15,3 +22,4 @@
 
 ### Dokumentation
 - [ ] Aktualisierte Umgebungsvariablen in der Dokumentation vermerken
+- [ ] CI/CD-Pipeline dokumentieren und aktualisieren
