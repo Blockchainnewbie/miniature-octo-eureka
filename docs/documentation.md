@@ -330,6 +330,16 @@ Die REST-API (Präfix `/api`) bietet voraussichtlich folgende Endpunkte (basiere
 - [ ] Sensor-Datensammlung (nicht ersichtlich)
 - [ ] Deployment auf Raspberry Pi (oder andere Produktionsumgebung)
 
+## 📊 Erweiterte Dokumentation
+
+Die folgenden Dokumente bieten weitere detaillierte Informationen:
+
+- **[Testdokumentation](test_documentation.md)**: Anleitung zur Testumgebung und Test-Ausführung
+- **[Funktionsdokumentation](function_explained.md)**: Detaillierte Beschreibung aller Funktionen
+- **[Änderungsprotokoll](changes_log.md)**: Tracking von Codeänderungen
+- **[Diagramme](diagrams.md)**: Klassen-, Struktur- und Ablaufdiagramme
+- **[Dokumentationsprüfliste](documentation_checklist.md)**: Übersicht über alle durchgeführten Dokumentationsarbeiten
+
 ---
 
 *Dokumentation erstellt am: 20.05.2025*

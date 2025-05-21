@@ -23,13 +23,17 @@ Eine Webanwendung zur Überwachung von Fahrzeugsensoren (z. B. Geschwindigkeit
 ## 📦 Repository-Struktur
 
 ```
-raspi-car-monitoring/
+miniature-octo-eureka/
 ├── backend/                # Flask-App (API + Tests)
+│   ├── app/                # Hauptanwendungscode
+│   │   ├── auth/           # Authentifizierungs-Blueprint
+│   │   ├── models/         # Datenbank-Modelle
+│   │   └── utils/          # Hilfsfunktionen
+│   └── tests/              # Pytest-Tests
 ├── frontend/               # Vue.js 3 App
-├── docker-compose.yml      # Lokal-Stack (App, DB, Nginx)
+├── docs/                   # Projektdokumentation
+├── docker-compose.yml      # Lokal-Stack (App, DB)
 ├── docker-compose.ci.yml   # Minimal-Stack für CI
-├── .github/
-│   └── workflows/          # CI-Pipeline
 └── README.md               # Projektübersicht
 ```
 
@@ -45,13 +49,13 @@ raspi-car-monitoring/
 1. Repository klonen:
 
    ```bash
-   git clone git@github.com:<Organisation>/raspi-car-monitoring.git
-   cd raspi-car-monitoring
+   git clone git@github.com:<Organisation>/miniature-octo-eureka.git
+   cd miniature-octo-eureka
    ```
 2. Umgebung kopieren und anpassen:
 
    ```bash
-   cp .env.example .env
+   cp backend/.env.example backend/.env
    # Umgebungsvariablen (DB-Passwort, JWT-Secret) setzen
    ```
 3. Docker-Stack starten:
@@ -62,7 +66,7 @@ raspi-car-monitoring/
 4. Backend-Tests ausführen:
 
    ```bash
-   docker exec backend pytest -q
+   docker compose exec backend pytest -q
    ```
 5. Dashboard im Browser öffnen:
 
@@ -94,13 +98,13 @@ Unser Projekt basiert auf einer klassischen 3‑Schichten-Architektur:
 
 * **Application Factory** (`app/__init__.py`): Initialisierung von Flask, SQLAlchemy, JWT, CORS.
 * **Models** (`app/models/`): Datenbanktabellen via SQLAlchemy (Single Responsibility).
-* **Services** (`app/services/`): Geschäftslogik, getrennt von Routen.
-* **Controllers** (`app/api/`): RESTful-Endpunkte, Datenvalidierung und Antwortaufbereitung.
-* **Schemas** (`app/schemas/`): Marshmallow- oder Pydantic-Schemas für Serialisierung.
+* **Auth Blueprint** (`app/auth/`): Authentifizierungs-Endpunkte und Logik.
+* **Extensions** (`app/extensions.py`): Zentrale Konfiguration für SQLAlchemy, JWT und Migrate.
+* **Config** (`app/config.py`): Umgebungsspezifische Konfigurationen für Development, Testing und Production.
 
-*Solche Trennung erleichtert Tests, Erweiterungen und Code-Wartung.*
+*Diese klare Strukturierung erleichtert Tests, Erweiterungen und Code-Wartung.*
 
-### Frontend-Struktur
+### Frontend-Struktur (geplant)
 
 * **Components** (`src/components/`): Wiederverwendbare UI-Elemente (Single Responsibility).
 * **Views** (`src/views/`): Seiten, die aus Komponenten zusammengesetzt werden.
@@ -120,10 +124,18 @@ Unser Projekt basiert auf einer klassischen 3‑Schichten-Architektur:
 * **SRP**: Jede Klasse/Funktion erfüllt nur eine Aufgabe.
 * **OCP**: Neue Sensor-Typen lassen sich per Plugin einbinden.
 * **LSP**: Basisklassen ersetzbar durch spezialisierte Implementierungen.
-* **ISP**: Kleine, zielgerichtete Interfaces.
+* **ISP**: Kleine, spezifische Schnittstellen statt einer großen.
 * **DIP**: Abhängigkeit von Abstraktionen, nicht von konkreten Klassen.
 
 *Einheitliche Code-Standards (ESLint, flake8), aussagekräftige Namen und Docstrings sichern langfristige Wartbarkeit.*
+
+## 📚 Dokumentation
+
+* **[Projektdokumentation](docs/documentation.md)**: Allgemeine Projektübersicht und Architektur
+* **[JWT-Authentifizierung](docs/jwt_authentication.md)**: Beschreibung des JWT-basierten Auth-Systems
+* **[Testdokumentation](docs/test_documentation.md)**: Anleitung zur Testumgebung und Test-Ausführung
+* **[Funktionsdokumentation](docs/function_explained.md)**: Detaillierte Beschreibung der Codebasis
+* **[Änderungsprotokoll](docs/changes_log.md)**: Tracking von Codeänderungen
 
 ## 📄 Lizenz
 
@@ -131,4 +143,4 @@ Dieses Projekt ist lizenziert unter der MIT License.
 
 ---
 
-*Zuletzt aktualisiert: 20.05.2025*
+*Zuletzt aktualisiert: 21.05.2025*

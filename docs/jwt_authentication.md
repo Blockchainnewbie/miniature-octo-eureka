@@ -279,6 +279,34 @@ curl -X POST http://localhost:5000/api/auth/logout \
 -b "refresh_token_cookie=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
+## Implementierte und geplante Arbeiten
+
+### Implementiert
+
+- ✅ Benutzerdatenmodell (User)
+- ✅ Refresh-Token-Modell
+- ✅ JWT-Konfiguration und Callbacks
+- ✅ Login-Endpunkt mit Token-Ausgabe
+- ✅ Token-Refresh-Endpunkt
+- ✅ Logout-Endpunkt mit Token-Widerruf
+- ✅ Geschützte Routen (Zugriffsschutz mit @jwt_required())
+
+### Geplant
+
+- ⬜ Admin-Interface zur Benutzerverwaltung
+- ⬜ Frontend-Integration der JWT-Authentication
+- ⬜ Rollenbasierte Zugriffskontrolle erweitern
+- ⬜ Password-Reset-Funktionalität
+- ⬜ Rate-Limiting für Login-Versuche
+
+## Weitere Informationen
+
+Für ausführlichere Details zu den implementierten Funktionen siehe:
+- [Funktionsdokumentation](function_explained.md)
+- [Testdokumentation](test_documentation.md)
+- [Diagramme](diagrams.md) - Enthält ein Ablaufdiagramm des Authentifizierungsprozesses
+
 ---
 
 Dokumentation erstellt am: 21. Mai 2025
+Letzte Aktualisierung: 21. Mai 2025

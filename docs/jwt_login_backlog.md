@@ -40,6 +40,19 @@
 7. **Dokumentation**
    - API-Dokumentation für Auth-Endpoints und Token-Handling ergänzen.
 
+## Abgeschlossene Arbeiten (21.05.2025)
+
+- ✅ Umfassende Test-Dokumentation erstellt (siehe [test_documentation.md](test_documentation.md))
+- ✅ Detaillierte Funktionsdokumentation erstellt (siehe [function_explained.md](function_explained.md))
+- ✅ JWT-Ablaufdiagramm und Datenbankschema erstellt (siehe [diagrams.md](diagrams.md))
+- ✅ Klassen- und Strukturdiagramm hinzugefügt
+
+## Nächste Schritte
+
+1. Frontend-Integration der JWT-Authentication
+2. Admin-Interface zur Benutzerverwaltung implementieren
+3. Unit-Tests für die Frontend-Komponenten entwickeln
+
 ---
 
 *Stand: 21. Mai 2025*
