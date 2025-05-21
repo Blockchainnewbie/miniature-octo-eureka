@@ -28,7 +28,7 @@ class TestingConfig(Config):
     """Testkonfiguration mit Testdatenbank."""
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql://apiuser:{}@db:3306/carmonitoring_test'.format(os.environ.get('DB_PASSWORD', 'password'))
+        'mysql://sonny:{}@db:3306/carmonitoring_test'.format(os.environ.get('DB_PASSWORD', 'password'))
     
 class ProductionConfig(Config):
     """Produktionskonfiguration."""

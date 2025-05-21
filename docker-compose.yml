@@ -35,7 +35,7 @@ services:
     environment:
       - MYSQL_DATABASE=carmonitoring
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_USER=apiuser
+      - MYSQL_USER=sonny
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
@@ -43,7 +43,7 @@ services:
       - "43306:3306" # Expose MySQL on port 43306
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uapiuser", "-p$$DB_PASSWORD"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-usonny", "-p$$DB_PASSWORD"]
       interval: 30s
       timeout: 10s
       retries: 5
