@@ -7,7 +7,7 @@ ENV PYTHONPATH=/app
 ENV FLASK_APP=app
 
 COPY requirements.txt .
-RUN apt-get update &amp;&amp; apt-get install -y default-libmysqlclient-dev build-essential --no-install-recommends &amp;&amp; rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y default-libmysqlclient-dev build-essential --no-install-recommends && rm -rf /var/lib/apt/lists/*
 RUN pip install -r requirements.txt
 
 FROM base as development
