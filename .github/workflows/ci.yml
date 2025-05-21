@@ -51,7 +51,6 @@ jobs:
 
       - name: Install Docker Compose
         run: |
-          # Docker Compose binary direkt herunterladen
           sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
@@ -64,17 +63,43 @@ jobs:
         run: |
           docker-compose -f docker-compose.ci.yml up -d
 
+      - name: Check container status
+        run: |
+          docker-compose -f docker-compose.ci.yml ps
+          
+      - name: Debug - View Backend Logs
+        run: |
+          docker-compose -f docker-compose.ci.yml logs backend
+
+      - name: Install curl in runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl
+
       - name: Wait for backend to be healthy
         run: |
           for i in {1..15}; do
-            docker-compose -f docker-compose.ci.yml exec -T backend bash -c "curl -sf http://localhost:5000/api/health || exit 1" && break
+            # Direkt vom GitHub Runner aus auf den exponierten Port zugreifen
+            if curl -sf http://localhost:5000/api/health; then
+              echo "Backend ist gesund!"
+              break
+            fi
             echo "Warte auf Backend-Startup... ($i/15)"
             sleep 5
+            if [ $i -eq 15 ]; then
+              echo "Backend-Startup fehlgeschlagen nach 15 Versuchen."
+              docker-compose -f docker-compose.ci.yml logs backend
+              exit 1
+            fi
           done
 
       - name: Run backend tests in Docker
         run: |
-          docker-compose -f docker-compose.ci.yml exec -T backend pytest
+          docker-compose -f docker-compose.ci.yml exec -T backend pytest || {
+            echo "Tests fehlgeschlagen. Backend-Logs anzeigen:"
+            docker-compose -f docker-compose.ci.yml logs backend
+            exit 1
+          }
 
       - name: Shutdown containers
         if: always()
