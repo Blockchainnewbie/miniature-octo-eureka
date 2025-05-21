@@ -10,3 +10,5 @@ flake8>=4.0.0
 pymysql>=1.0.0
 cryptography>=3.4.0
 argon2-cffi>=23.1.0
+
+mysqlclient
