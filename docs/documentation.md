@@ -226,6 +226,10 @@ Das Vue.js 3-Frontend nutzt moderne JavaScript-Funktionen und wird mit Vite geba
 }
 ```
 
+---
+
+
+
 ## 🧑‍💻 Entwicklungsworkflow
 
 1. **Feature-Branches**: Neue Features werden in separaten Branches entwickelt.
@@ -299,6 +303,10 @@ Die REST-API (Präfix `/api`) bietet voraussichtlich folgende Endpunkte (basiere
 - **Backend**: Standard-Logging-Fähigkeiten von Flask. Keine spezifischen erweiterten Logging-Bibliotheken explizit identifiziert.
 - **Frontend**: Browser-Konsole für Entwicklungs-Logs. Keine spezifischen Telemetrie- oder Monitoring-Tools in [`frontend/package.json`](frontend/package.json:1) identifiziert.
 - **Container-Logs**: Docker Compose stellt Logs für alle Services bereit (`docker compose logs`).
+
+## To-Do: Admin-Benutzerverwaltung
+- Im Dashboard muss eine Funktion implementiert werden, mit der Administratoren neue Benutzerkonten anlegen können.
+- Die öffentliche Registrierung ist deaktiviert, daher erfolgt das Anlegen von Usern ausschließlich durch Admins über das Backend/Dashboard.
 
 ## 🔄 Zukünftige Erweiterungen
 
