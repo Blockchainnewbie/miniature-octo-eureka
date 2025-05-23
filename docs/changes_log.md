@@ -1,8 +1,8 @@
-# Änderungsprotokoll: 20.05.2025 - 21.05.2025
+# Änderungsprotokoll: 20.05.2025 - 23.05.2025
 
 ## Zusammenfassung
 
-Dieses Dokument beschreibt die Änderungen am Projekt "miniature-octo-eureka" zwischen dem 20.05.2025 und dem 21.05.2025, basierend auf der Git-Historie.
+Dieses Dokument beschreibt die Änderungen am Projekt "miniature-octo-eureka" zwischen dem 20.05.2025 und dem 23.05.2025, basierend auf der Git-Historie.
 
 ## Codeänderungen (Commit 56710ba vom 21.05.2025)
 
@@ -49,6 +49,37 @@ Dieses Dokument beschreibt die Änderungen am Projekt "miniature-octo-eureka" zw
    - ER-Diagramm der Datenbanktabellen
 
 4. **documentation_checklist.md**
+   - Liste aller Dokumentationsanforderungen
+   - Status jedes Dokumentationselements
+   - Checkliste für zukünftige Dokumentation
+
+## Umgebungs- und Infrastrukturänderungen (23.05.2025)
+
+### Implementierung von Datenbankmigrationen mit Flask-Migrate
+
+**Beschreibung:** Integration von Flask-Migrate für versioniertes Datenbankschema-Management und strukturierte Datenbankänderungen.
+
+**Geänderte/Hinzugefügte Dateien:**
+- `backend/requirements.txt`: Flask-Migrate-Abhängigkeit hinzugefügt
+- `backend/app/extensions.py`: Flask-Migrate konfiguriert und mit SQLAlchemy verknüpft
+- `backend/migrations/`: Verzeichnis für Datenbankmigrationsdateien erstellt
+- `sql/init.sql`: Datenbankbenutzerberechtigungen für Migrationen erweitert
+
+**Hauptfunktionalitäten:**
+1. Automatische Erstellung von Migrationsskripts aus Modelländerungen
+2. Versionskontrolle für Datenbankschemas
+3. Einfaches Upgrade und Downgrade von Datenbankversionen
+4. Konsistente Datenbank über alle Umgebungen hinweg
+
+### Erweiterte Docker-Umgebung
+
+**Beschreibung:** Vollständige Überarbeitung der Docker-Compose-Konfigurationen mit getrennten Umgebungen für Entwicklung, Produktionssimulation und CI/CD.
+
+**Neue/Aktualisierte Dateien:**
+- `docker-compose.dev.yml`: Optimierte Entwicklungsumgebung
+- `docker-compose.prod.local.yml`: Neue Produktionssimulationsumgebung
+- `docker-compose.ci.yml`: Angepasste CI/CD-Umgebung
+- `docs/environment_changes.md`: Detailliertes Änderungsprotokoll zur Umgebungsumstellung
    - Übersicht über alle durchgeführten Dokumentationsarbeiten
    - Status der Dokumentation und Diagramme
 
@@ -73,4 +104,4 @@ Basierend auf den implementierten Features und der aktualisierten Dokumentation 
 ---
 
 Erstellt am: 21.05.2025
-Basierend auf Git-Historie durch Commits 56710ba und 8680d62
+Basierend auf Git-Historie und aktuellen Projektänderungen bis zum 23.05.2025
