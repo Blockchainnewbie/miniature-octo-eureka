@@ -2,7 +2,7 @@
 
 ## Übersicht der Änderungen
 
-Die Docker Compose-Umgebung wurde vollständig überarbeitet, um eine klare Trennung zwischen Entwicklung, Produktionssimulation und CI/CD zu gewährleisten. Die folgenden Dateien wurden aktualisiert oder erstellt:
+Die Docker Compose-Umgebung wurde vollständig überarbeitet, um eine klare Trennung zwischen Entwicklung, Produktionssimulation und CI/CD zu gewährleisten. Zusätzlich wurden Datenbankmigrationen mit Flask-Migrate eingeführt, um Schemaänderungen konsistent zu verwalten. Die folgenden Dateien wurden aktualisiert oder erstellt:
 
 ## 1. Docker Compose Konfigurationen
 
@@ -50,7 +50,19 @@ Die Docker Compose-Umgebung wurde vollständig überarbeitet, um eine klare Tren
 - `config.py` aktualisiert für konsistente `apiuser`-Verwendung
 - Standardwerte angepasst für einfacheres Setup
 
-## 4. Dokumentation
+## 4. Datenbankmigration mit Flask-Migrate
+
+### Migration-Setup
+- Flask-Migrate (basierend auf Alembic) für versionierte Datenbankänderungen implementiert
+- Migrationsverzeichnis (`migrations/`) für die Versionsverfolgung von Schemaänderungen erstellt
+- Automatische Migration-Generierung aus SQLAlchemy-Modellen konfiguriert
+
+### Berechtigungen und Konfiguration
+- Erweiterte Datenbankberechtigungen für `apiuser` (CREATE, ALTER, DROP, etc.)
+- Korrekte Passwort-Synchronisation zwischen Containern und Datenbankbenutzer
+- Migrations-Dokumentation in Code-Kommentaren für bessere Nachvollziehbarkeit
+
+## 5. Dokumentation
 
 ### Neue Dokumentation
 - **`docs/docker-environments.md`** mit detaillierten Erklärungen
@@ -81,4 +93,35 @@ Die Docker Compose-Umgebung wurde vollständig überarbeitet, um eine klare Tren
 1. Alle alten Docker-Umgebungen herunterfahren: `docker-compose down -v`
 2. Die neue Entwicklungsumgebung starten: `docker-compose -f docker-compose.dev.yml up -d`
 3. Bei Datenbankproblemen: `docker volume prune` und dann neu starten
-4. Frontend lokal ausführen: `cd frontend && npm run dev`
+4. Datenbankmigration initialisieren (falls noch nicht geschehen):
+   ```bash
+   docker exec -it car_monitoring_backend_dev flask db init
+   docker exec -it car_monitoring_backend_dev flask db migrate -m "Initial migration" 
+   docker exec -it car_monitoring_backend_dev flask db upgrade
+   ```
+5. Frontend lokal ausführen: `cd frontend && npm run dev`
+
+## Bekannte Probleme und Lösungen
+
+### Berechtigungsprobleme mit der Datenbank
+Bei Fehlern wie `Access denied for user 'apiuser'@'xxx.xxx.xxx.xxx'`:
+1. Überprüfe die Passwörter in der `.env`-Datei und in `init.sql`
+2. Führe folgenden Befehl aus, um die Berechtigungen zu aktualisieren:
+   ```bash
+   docker exec -i car_monitoring_db_dev mysql -uroot -p"IHR_ROOT_PASSWORT" -e "GRANT ALL PRIVILEGES ON carmonitoring.* TO 'apiuser'@'%'; FLUSH PRIVILEGES;"
+   ```
+3. Falls nötig, setze das Passwort für den apiuser zurück:
+   ```bash
+   docker exec -i car_monitoring_db_dev mysql -uroot -p"IHR_ROOT_PASSWORT" -e "ALTER USER 'apiuser'@'%' IDENTIFIED BY 'IHR_API_PASSWORT'; FLUSH PRIVILEGES;"
+   ```
+
+### Module nicht gefunden
+Wenn Python-Module trotz Eintrag in `requirements.txt` nicht gefunden werden:
+1. Container neu bauen mit:
+   ```bash
+   docker compose -f docker-compose.dev.yml down && docker compose -f docker-compose.dev.yml up --build -d
+   ```
+2. Bei Bedarf in den Container einsteigen und prüfen:
+   ```bash
+   docker exec -it car_monitoring_backend_dev pip list | grep flask-migrate
+   ```

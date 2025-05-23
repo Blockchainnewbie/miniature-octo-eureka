@@ -36,7 +36,7 @@ show_help() {
 
 start_dev() {
     echo -e "${BLUE}Starte Entwicklungsumgebung...${NC}"
-    docker-compose -f docker-compose.dev.yml up -d
+    docker compose -f docker-compose.dev.yml up -d
     echo -e "${GREEN}Entwicklungsumgebung gestartet!${NC}"
     echo -e "\n${YELLOW}Backend läuft auf:${NC} http://localhost:5000"
     echo -e "${YELLOW}MySQL läuft auf:${NC} localhost:43306"
@@ -46,13 +46,13 @@ start_dev() {
 
 stop_dev() {
     echo -e "${BLUE}Stoppe Entwicklungsumgebung...${NC}"
-    docker-compose -f docker-compose.dev.yml down
+    docker compose -f docker-compose.dev.yml down
     echo -e "${GREEN}Entwicklungsumgebung gestoppt!${NC}"
 }
 
 start_prod() {
     echo -e "${BLUE}Starte lokale Produktionssimulation...${NC}"
-    docker-compose -f docker-compose.prod.local.yml up -d
+    docker compose -f docker-compose.prod.local.yml up -d
     echo -e "${GREEN}Produktionssimulation gestartet!${NC}"
     echo -e "\n${YELLOW}Frontend läuft auf:${NC} http://localhost:3000"
     echo -e "${YELLOW}Backend läuft auf:${NC} http://localhost:5000"
@@ -61,19 +61,19 @@ start_prod() {
 
 stop_prod() {
     echo -e "${BLUE}Stoppe lokale Produktionssimulation...${NC}"
-    docker-compose -f docker-compose.prod.local.yml down
+    docker compose -f docker-compose.prod.local.yml down
     echo -e "${GREEN}Produktionssimulation gestoppt!${NC}"
 }
 
 start_ci() {
     echo -e "${BLUE}Starte CI-Tests...${NC}"
-    docker-compose -f docker-compose.ci.yml up --build
+    docker compose -f docker-compose.ci.yml up --build
     echo -e "${GREEN}CI-Tests abgeschlossen!${NC}"
 }
 
 stop_ci() {
     echo -e "${BLUE}Stoppe CI-Umgebung...${NC}"
-    docker-compose -f docker-compose.ci.yml down
+    docker compose -f docker-compose.ci.yml down
     echo -e "${GREEN}CI-Umgebung gestoppt!${NC}"
 }
 
@@ -85,13 +85,13 @@ show_logs() {
 
     case $1 in
         dev)
-            docker-compose -f docker-compose.dev.yml logs -f
+            docker compose -f docker-compose.dev.yml logs -f
             ;;
         prod)
-            docker-compose -f docker-compose.prod.local.yml logs -f
+            docker compose -f docker-compose.prod.local.yml logs -f
             ;;
         ci)
-            docker-compose -f docker-compose.ci.yml logs -f
+            docker compose -f docker-compose.ci.yml logs -f
             ;;
         *)
             echo -e "${RED}Ungültige Umgebung. Verwende 'dev', 'prod' oder 'ci'${NC}"
@@ -120,9 +120,10 @@ cleanup_all() {
     echo
     if [[ $REPLY =~ ^[Jj]$ ]]; then
         echo -e "${BLUE}Stoppe alle Umgebungen...${NC}"
-        docker-compose -f docker-compose.dev.yml down -v 2>/dev/null
-        docker-compose -f docker-compose.prod.local.yml down -v 2>/dev/null
-        docker-compose -f docker-compose.ci.yml down -v 2>/dev/null
+        docker compose -f docker-compose.dev.yml down -v 2>/dev/null
+        docker compose -f docker-compose.prod.local.yml down -v 2>/dev/null
+        docker compose -f docker-compose.ci.yml down -v 2>/dev/null
+        docker compose down -v 2>/dev/null
         
         echo -e "${BLUE}Lösche Docker Volumes...${NC}"
         docker volume rm $(docker volume ls -q --filter "name=car_monitoring*") 2>/dev/null || true
