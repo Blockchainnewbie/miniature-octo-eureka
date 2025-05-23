@@ -1,0 +1,109 @@
+version: '3.8'
+
+services:
+  # Frontend Service - Production simulation
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: car_monitoring_frontend_prod
+    ports:
+      - "3000:80"  # Nginx serves on port 80 internally
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_API_URL=http://localhost:5000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 30s
+      retries: 3
+      timeout: 10s
+      start_period: 20s
+    restart: unless-stopped
+    networks:
+      - prod_network
+
+  # Backend Service - Production simulation
+  backend:
+    build: 
+      context: ./backend
+      target: production
+    container_name: car_monitoring_backend_prod
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_APP=run.py
+      - FLASK_DEBUG=0
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=apiuser
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=carmonitoring
+      - DATABASE_URL=mysql://apiuser:${DB_PASSWORD}@db:3306/carmonitoring
+      - WORKERS=4  # Gunicorn workers
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      retries: 3
+      timeout: 10s
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - prod_network
+
+  # Database Service - Production simulation
+  db:
+    image: mysql:8.0
+    container_name: car_monitoring_db_prod
+    environment:
+      - MYSQL_DATABASE=carmonitoring
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      # apiuser will be created via init.sql
+    volumes:
+      - mysql_data_prod:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+      - ./sql/prod-config.cnf:/etc/mysql/conf.d/prod-config.cnf:ro
+    # No exposed ports for production simulation (internal only)
+    command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=512M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$$DB_PASSWORD"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - prod_network
+
+  # Redis Service - Caching and sessions (production feature)
+  redis:
+    image: redis:7-alpine
+    container_name: car_monitoring_redis_prod
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data_prod:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - prod_network
+
+networks:
+  prod_network:
+    driver: bridge
+    name: car_monitoring_prod
+
+volumes:
+  mysql_data_prod:
+    name: car_monitoring_mysql_prod
+  redis_data_prod:
+    name: car_monitoring_redis_prod

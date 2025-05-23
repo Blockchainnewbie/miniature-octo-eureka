@@ -43,8 +43,15 @@ class DevelopmentConfig(Config):
     Aktiviert Debug-Modus und verwendet die lokale Entwicklungsdatenbank.
     """
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
-        'mysql+pymysql://user:password@db/carmonitoring')
+    
+    # MySQL-Datenbankverbindung für Entwicklung
+    DB_HOST = os.environ.get('DB_HOST', 'localhost')
+    DB_PORT = os.environ.get('DB_PORT', '43306')
+    DB_NAME = os.environ.get('DB_NAME', 'carmonitoring')
+    DB_USER = os.environ.get('DB_USER', 'apiuser')
+    DB_PASSWORD = os.environ.get('DB_PASSWORD', '')
+    
+    SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
 class TestingConfig(Config):
     """

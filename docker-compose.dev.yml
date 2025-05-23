@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Backend Service - Containerized with hot reload
+  backend:
+    build: 
+      context: ./backend
+      target: development
+    container_name: car_monitoring_backend_dev
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__  # Exclude pycache from volume mount
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=run.py
+      - FLASK_DEBUG=1
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=apiuser
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=carmonitoring
+      - DATABASE_URL=mysql://apiuser:${DB_PASSWORD}@db:3306/carmonitoring
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/api/health"]
+      interval: 30s
+      retries: 3
+      timeout: 10s
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - dev_network
+
+  # Database Service - Containerized
+  db:
+    image: mysql:8.0
+    container_name: car_monitoring_db_dev
+    environment:
+      - MYSQL_DATABASE=carmonitoring
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      # apiuser will be created via init.sql
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    ports:
+      - "43306:3306"  # Exposed for local frontend connection
+    command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=128M
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p$$DB_PASSWORD"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    networks:
+      - dev_network
+
+networks:
+  dev_network:
+    driver: bridge
+    name: car_monitoring_dev
+
+volumes:
+  mysql_data_dev:
+    name: car_monitoring_mysql_dev

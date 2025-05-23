@@ -1,0 +1,27 @@
+[mysqld]
+# Production optimizations
+innodb_buffer_pool_size = 512M
+innodb_log_file_size = 128M
+innodb_flush_log_at_trx_commit = 2
+innodb_flush_method = O_DIRECT
+
+# Connection settings
+max_connections = 200
+wait_timeout = 28800
+interactive_timeout = 28800
+
+# Query cache (if needed)
+query_cache_type = 1
+query_cache_size = 32M
+
+# Binary logging for replication/backup
+log_bin = mysql-bin
+binlog_format = ROW
+expire_logs_days = 7
+
+# Character set
+character_set_server = utf8mb4
+collation_server = utf8mb4_unicode_ci
+
+# Security
+sql_mode = STRICT_TRANS_TABLES,NO_ZERO_DATE,NO_ZERO_IN_DATE,ERROR_FOR_DIVISION_BY_ZERO

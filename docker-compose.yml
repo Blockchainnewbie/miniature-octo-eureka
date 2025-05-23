@@ -1,4 +1,26 @@
+# DEPRECATED: Use specific environment files instead
+# 
+# This file is kept for reference only. Use instead:
+# - docker-compose.dev.yml      (Development)
+# - docker-compose.prod.local.yml (Production Simulation)  
+# - docker-compose.ci.yml       (CI/CD)
+#
+# See docs/docker-environments.md for detailed usage
+
+# LEGACY CONFIGURATION - DO NOT USE
+# 
+# This configuration contains outdated and inconsistent settings
+# that have been replaced by the environment-specific configurations.
+#
+# To migrate:
+# 1. Use 'docker-compose.dev.yml' for development
+# 2. Use 'docker-compose.prod.local.yml' for production testing
+# 3. Refer to docs/docker-environments.md for setup instructions
+
+version: '3.8'
+
 services:
+  # LEGACY - Use docker-compose.dev.yml instead
   backend:
     build: 
       context: ./backend
@@ -19,6 +41,7 @@ services:
       retries: 3
       timeout: 10s
 
+  # LEGACY - Frontend now runs locally in dev mode
   frontend:
     build: 
       context: ./frontend
@@ -30,24 +53,24 @@ services:
     environment:
       - VITE_API_URL=http://localhost:5000
 
+  # LEGACY - Inconsistent user configuration
   db:
     image: mysql:8.0
     environment:
       - MYSQL_DATABASE=carmonitoring
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - MYSQL_USER=sonny
+      - MYSQL_USER=sonny  # DEPRECATED: Use apiuser instead
       - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     ports:
-      - "43306:3306" # Expose MySQL on port 43306
+      - "43306:3306"
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-usonny", "-p$$DB_PASSWORD"]
       interval: 30s
       timeout: 10s
       retries: 5
-
 
 volumes:
   mysql_data:

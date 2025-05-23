@@ -19,6 +19,7 @@ Eine Webanwendung zur Überwachung von Fahrzeugsensoren (z. B. Geschwindigkeit
 * **Auth:** JWT-basierte Anmeldung, Token-Refresh, Logout
 * **CI/CD:** GitHub Actions für Build & Tests
 * **Automatisierung:** Kanban-Board in GitHub Projects mit n8n-Integration
+* **Umgebungen:** Drei separate Docker-Umgebungen für Entwicklung, Produktion und CI/CD
 
 ## 📦 Repository-Struktur
 
@@ -61,8 +62,18 @@ miniature-octo-eureka/
 3. Docker-Stack starten:
 
    ```bash
-   docker compose up -d
+   # Für Entwicklung (Backend + DB)
+   docker compose -f docker-compose.dev.yml up -d
+   
+   # ODER für Produktionssimulation (alle Services)
+   docker compose -f docker-compose.prod.local.yml up -d
+   
+   # ODER verwende das praktische Manager-Skript:
+   ./env-manager.sh dev  # Entwicklungsumgebung
+   ./env-manager.sh prod # Produktionssimulation
    ```
+   
+   Mehr Details zu den Umgebungen: [docs/docker-environments.md](docs/docker-environments.md)
 4. Backend-Tests ausführen:
 
    ```bash
