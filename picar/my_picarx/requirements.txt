@@ -1,0 +1,14 @@
+# Hardware abstraction (choose one based on your platform)
+# RPi.GPIO>=0.7.1  # For Raspberry Pi
+# gpiozero>=1.6.2  # Alternative GPIO library
+# adafruit-circuitpython-gpio>=1.1.0  # For CircuitPython
+
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0
+mypy>=0.990
+
+# Optional: logging and configuration
+pyyaml>=6.0

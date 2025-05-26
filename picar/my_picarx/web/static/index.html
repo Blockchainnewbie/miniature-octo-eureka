@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picar-X Remote Control</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚗 Picar-X Remote Control</h1>
+            <div class="status-bar">
+                <span id="connection-status" class="status-indicator">🔴 Disconnected</span>
+                <span id="camera-status" class="status-indicator">📷 Camera Off</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Camera Feed -->
+            <section class="camera-section">
+                <div class="camera-container">
+                    <img id="camera-feed" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQwIiBoZWlnaHQ9IjQ4MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMzMzIi8+CiAgPHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNhbWVyYSBGZWVkPC90ZXh0Pgo8L3N2Zz4K" alt="Camera Feed">
+                    <div class="camera-overlay">
+                        <div class="crosshair"></div>
+                        <div class="info-overlay">
+                            <div class="sensor-info">
+                                <span>📏 Distance: <span id="distance-value">--</span> cm</span>
+                                <span>📍 Line: <span id="line-position">--</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Camera Controls -->
+                <div class="camera-controls">
+                    <h3>📷 Camera Control</h3>
+                    <div class="camera-joystick">
+                        <div class="joystick-container">
+                            <div class="joystick-track">
+                                <div id="camera-joystick" class="joystick-handle"></div>
+                            </div>
+                            <div class="joystick-labels">
+                                <span class="label-up">⬆️ Tilt</span>
+                                <span class="label-down">⬇️ Tilt</span>
+                                <span class="label-left">⬅️ Pan</span>
+                                <span class="label-right">➡️ Pan</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="camera-buttons">
+                        <button id="camera-center" class="btn btn-secondary">🎯 Center</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Robot Controls -->
+            <section class="controls-section">
+                <!-- Movement Controls -->
+                <div class="movement-controls">
+                    <h3>🎮 Movement Control</h3>
+                    <div class="movement-pad">
+                        <div class="movement-row">
+                            <button id="btn-forward" class="btn btn-primary movement-btn">⬆️</button>
+                        </div>
+                        <div class="movement-row">
+                            <button id="btn-left" class="btn btn-primary movement-btn">⬅️</button>
+                            <button id="btn-stop" class="btn btn-danger movement-btn">⏹️</button>
+                            <button id="btn-right" class="btn btn-primary movement-btn">➡️</button>
+                        </div>
+                        <div class="movement-row">
+                            <button id="btn-backward" class="btn btn-primary movement-btn">⬇️</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Speed Control -->
+                    <div class="speed-control">
+                        <label for="speed-slider">🚀 Speed: <span id="speed-value">50</span>%</label>
+                        <input type="range" id="speed-slider" min="10" max="100" value="50" class="slider">
+                    </div>
+                </div>
+
+                <!-- Steering Controls -->
+                <div class="steering-controls">
+                    <h3>🎯 Steering Control</h3>
+                    <div class="steering-container">
+                        <input type="range" id="steering-slider" min="-30" max="30" value="0" class="slider vertical-slider">
+                        <div class="steering-labels">
+                            <span>Left 30°</span>
+                            <span>Center</span>
+                            <span>Right 30°</span>
+                        </div>
+                        <div class="steering-value">
+                            Angle: <span id="steering-value">0</span>°
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>⚡ Quick Actions</h3>
+                    <button id="btn-reset" class="btn btn-warning">🔄 Reset</button>
+                    <button id="btn-emergency-stop" class="btn btn-danger">🛑 Emergency Stop</button>
+                </div>
+            </section>
+
+            <!-- Status Panel -->
+            <section class="status-section">
+                <h3>📊 Robot Status</h3>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="status-label">📏 Distance</span>
+                        <span id="status-distance" class="status-value">-- cm</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">📍 Line Position</span>
+                        <span id="status-line" class="status-value">--</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">🎯 Steering</span>
+                        <span id="status-steering" class="status-value">0°</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">🚀 Speed</span>
+                        <span id="status-speed" class="status-value">0%</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Logs -->
+        <section class="logs-section">
+            <h3>📝 System Logs</h3>
+            <div id="logs-container" class="logs-container"></div>
+            <button id="clear-logs" class="btn btn-secondary">🗑️ Clear Logs</button>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

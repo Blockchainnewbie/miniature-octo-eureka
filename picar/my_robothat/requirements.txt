@@ -1,0 +1,11 @@
+# Core dependencies
+RPi.GPIO>=0.7.1
+adafruit-circuitpython-busio
+adafruit-circuitpython-ads1x15
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0
+mypy>=0.990
