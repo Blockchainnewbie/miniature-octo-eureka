@@ -5,8 +5,8 @@ DC Motor implementation.
 from typing import Optional
 import logging
 from ..interfaces.motor_interface import MotorInterface
-from ..hardware.gpio_controller import GPIOController
-from ..hardware.pwm_controller import PWMController
+from my_robothat.gpio import RaspberryPiGPIOController
+from my_robothat.pwm import RaspberryPiPWMController
 from ..utils.validation import validate_speed_range
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ class DCMotor(MotorInterface):
     """DC Motor controller implementation."""
     
     def __init__(self, pwm_pin: str, direction_pin: str, 
-                 frequency: float = 1000.0):
+                frequency: float = 1000.0):
         """
         Initialize DC motor.
         
@@ -25,8 +25,8 @@ class DCMotor(MotorInterface):
             direction_pin: Direction control pin
             frequency: PWM frequency in Hz
         """
-        self.pwm_controller = PWMController(pwm_pin, frequency)
-        self.direction_controller = GPIOController(direction_pin)
+        self.pwm_controller = RaspberryPiPWMController(pwm_pin, frequency)
+        self.direction_controller = RaspberryPiGPIOController(direction_pin)
         self._current_speed = 0
         self._calibration_offset = 0
         

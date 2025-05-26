@@ -32,6 +32,7 @@ class RaspberryPiPWMController(PWMInterface):
             logger.warning("RPi.GPIO not available, using mock implementation")
             self._GPIO = self._create_mock_gpio()
             self._is_setup = True
+            logger.info("Using mock GPIO implementation for development/testing")
     
     def _create_mock_gpio(self):
         """Create mock GPIO for testing/development."""
