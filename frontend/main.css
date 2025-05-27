@@ -1,0 +1,595 @@
+/**
+ * Navaro - Dark Earth-Tone Theme für Rettungs- und Erkundungsmissionen
+ * Farbschema optimiert für 24/7-Einsätze mit reduzierter Augenbelastung
+ * 
+ * Dunkle Farbpalette:
+ * - Primary: Dunkler Schiefer (#3A4D39) - Robustheit und Vertrauen
+ * - Secondary: Tiefes Tannengrün (#1F2F1F) - Taktische Sicherheit
+ * - Accent: Bernstein-Orange (#FF8C42) - Kritische Aufmerksamkeit
+ * - Background: Anthrazit-Schwarz (#1E1E1E) - Reduzierte Augenbelastung
+ * - Surface: Dunkler Granit (#2A2A2A) - Oberflächenelemente
+ * - Warning: Rost-Orange (#CC7A00) - Warnungen
+ * - Success: Taktisches Grün (#4A6741) - Erfolg/Bestätigung
+ * - Danger: Dunkles Rot (#8B2635) - Kritische Zustände
+ * - Text: Warmes Beige (#E8D5B7) - Optimale Lesbarkeit
+ */
+
+:root {
+    /* Haupt-Farbpalette für dunkle Rettungs- & Erkundungsumgebung */
+    --navaro-primary: #3A4D39;        /* Dunkler Schiefer-Grün */
+    --navaro-primary-dark: #2A3529;   /* Sehr dunkler Schiefer */
+    --navaro-primary-light: #4A5D49;  /* Hellerer Schiefer */
+    
+    --navaro-secondary: #1F2F1F;      /* Tiefes Tannengrün */
+    --navaro-secondary-light: #2F3F2F; /* Helles Tannengrün */
+    
+    --navaro-accent: #FF8C42;         /* Bernstein-Orange */
+    --navaro-accent-light: #FFA366;   /* Helles Bernstein */
+    --navaro-accent-dark: #E67B2E;    /* Dunkles Bernstein */
+    
+    --navaro-dark: #1E1E1E;          /* Anthrazit-Schwarz (Haupthintergrund) */
+    --navaro-darker: #141414;        /* Tiefschwarz */
+    --navaro-surface: #2A2A2A;       /* Dunkler Granit (Oberflächenelemente) */
+    --navaro-surface-light: #353535; /* Hellere Oberfläche */
+    
+    --navaro-warning: #CC7A00;        /* Rost-Orange */
+    --navaro-success: #4A6741;        /* Taktisches Grün */
+    --navaro-danger: #8B2635;         /* Dunkles Rot */
+    
+    --navaro-text-primary: #E8D5B7;   /* Warmes Beige (Haupttext) */
+    --navaro-text-secondary: #B8A082; /* Gedämpftes Beige (Sekundärtext) */
+    --navaro-text-muted: #8A7B6B;     /* Gedämpfter Text */
+    
+    /* Schatten und Transparenzen für dunkles Theme */
+    --navaro-shadow-light: rgba(255, 140, 66, 0.1);
+    --navaro-shadow-medium: rgba(0, 0, 0, 0.3);
+    --navaro-shadow-dark: rgba(0, 0, 0, 0.5);
+    --navaro-glow-accent: rgba(255, 140, 66, 0.3);
+    
+    /* Border-Farben für dunkles Theme */
+    --navaro-border-primary: #4A5D49;
+    --navaro-border-secondary: #2F3F2F;
+    --navaro-border-accent: #FF8C42;
+}
+
+/**
+ * Globale Styling-Grundlage für dunkles Theme
+ * Stellt sicher, dass alle Elemente das dunkle Theme verwenden
+ */
+body {
+    background-color: var(--navaro-dark);
+    color: var(--navaro-text-primary);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sidebar Styling - Dunkle Navigation für Rettungsmissionen */
+.sidebar {
+    min-height: calc(100vh - 56px);
+    background: linear-gradient(180deg, var(--navaro-surface) 0%, var(--navaro-primary-dark) 100%);
+    box-shadow: 2px 0 12px var(--navaro-shadow-dark);
+    border-right: 2px solid var(--navaro-border-primary);
+    color: var(--navaro-text-primary);
+}
+
+/**
+ * Sidebar Navigation Links
+ * Dunkles Design für optimale Sichtbarkeit bei Rettungsmissionen
+ */
+.sidebar .nav-link {
+    color: var(--navaro-text-secondary);
+    padding: 0.875rem 1.25rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.375rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-left: 3px solid transparent;
+    font-weight: 500;
+}
+
+/* Hover-Effekt: Bernstein-Akzente für bessere Navigation */
+.sidebar .nav-link:hover {
+    background: linear-gradient(90deg, var(--navaro-primary), var(--navaro-primary-light));
+    color: var(--navaro-text-primary);
+    border-left-color: var(--navaro-accent);
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px var(--navaro-glow-accent);
+}
+
+/* Aktiver Zustand: Klare Hervorhebung für aktuelle Position */
+.sidebar .nav-link.active {
+    background: linear-gradient(135deg, var(--navaro-accent), var(--navaro-accent-dark));
+    color: var(--navaro-dark);
+    border-left-color: var(--navaro-accent-light);
+    box-shadow: 0 4px 12px var(--navaro-glow-accent);
+    font-weight: 600;
+}
+
+/* Icon-Styling in der Sidebar */
+.sidebar .nav-link i {
+    width: 20px;
+    text-align: center;
+    color: inherit;
+}
+
+/**
+ * Joystick-Container: Taktisches Steuerungsinterface
+ * Design optimiert für Low-Light-Umgebungen und Präzision
+ */
+.joystick-container {
+    background: radial-gradient(circle at center, var(--navaro-surface), var(--navaro-primary-dark));
+    border: 3px solid var(--navaro-border-primary);
+    box-shadow: 
+        inset 0 0 20px var(--navaro-shadow-medium),
+        0 4px 16px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+}
+
+/* Hover-Effekt: Verstärkte taktische Interaktivität */
+.joystick-container:hover {
+    box-shadow: 
+        inset 0 0 25px var(--navaro-shadow-dark),
+        0 6px 20px var(--navaro-shadow-dark),
+        0 0 30px var(--navaro-glow-accent);
+    border-color: var(--navaro-accent);
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+}
+
+/**
+ * Joystick-Knopf: Präzise taktische Steuerung
+ * Optimiert für kritische Rettungs- und Erkundungseinsätze
+ */
+#joystick {
+    background: linear-gradient(145deg, var(--navaro-accent), var(--navaro-accent-light));
+    border: 2px solid var(--navaro-accent-dark);
+    box-shadow: 
+        0 4px 12px var(--navaro-shadow-dark),
+        0 0 15px var(--navaro-glow-accent);
+}
+
+/* Interaktive Zustände des Joysticks für taktische Präzision */
+#joystick:hover {
+    background: linear-gradient(145deg, var(--navaro-accent-light), var(--navaro-accent));
+    box-shadow: 
+        0 6px 16px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+    transform: translate(-50%, -50%) scale(1.05);
+}
+
+#joystick:active {
+    background: linear-gradient(145deg, var(--navaro-accent-dark), var(--navaro-accent));
+    box-shadow: 
+        0 2px 8px var(--navaro-shadow-dark),
+        inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+/**
+ * Video-Container: Robuste Anzeige für Feld-Monitoring in dunkler Umgebung
+ */
+.video-container {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--navaro-surface);
+}
+
+/* Video-Element mit taktischem Rahmen für bessere Sichtbarkeit */
+.video-container video {
+    border-radius: 0.75rem;
+    border: 2px solid var(--navaro-border-primary);
+    box-shadow: 
+        0 8px 24px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+    background: var(--navaro-surface);
+}
+
+/* Hover-Effekt für verbesserte Feldüberwachung */
+.video-container:hover {
+    transform: scale(1.01);
+    box-shadow: 
+        0 12px 32px var(--navaro-shadow-dark),
+        0 0 30px var(--navaro-glow-accent);
+}
+
+/**
+ * Status-Display: Klare Informationsdarstellung für kritische Missionen
+ * Dunkles Design für reduzierte Augenbelastung bei langen Einsätzen
+ */
+.status-display .bg-light {
+    background: linear-gradient(135deg, var(--navaro-surface), var(--navaro-surface-light)) !important;
+    border: 1px solid var(--navaro-border-primary);
+    color: var(--navaro-text-primary) !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px var(--navaro-shadow-medium);
+}
+
+/* Interaktive Status-Anzeigen für bessere Übersichtlichkeit */
+.status-display .bg-light:hover {
+    background: linear-gradient(135deg, var(--navaro-surface-light), var(--navaro-primary-dark)) !important;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 4px 12px var(--navaro-shadow-dark),
+        0 0 15px var(--navaro-glow-accent);
+    border-color: var(--navaro-accent);
+}
+
+/**
+ * Responsive Design: Optimiert für taktische Geräte und verschiedene Bildschirmgrößen
+ * Besondere Berücksichtigung von Low-Light-Umgebungen
+ */
+@media (max-width: 768px) {
+    .sidebar {
+        min-height: auto;
+        background: var(--navaro-surface);
+        border-bottom: 2px solid var(--navaro-border-primary);
+    }
+    
+    /* Kleinere Joystick-Steuerung für mobile Einsatzgeräte */
+    .joystick-container {
+        width: 150px !important;
+        height: 150px !important;
+        border-width: 2px;
+        box-shadow: 
+            inset 0 0 15px var(--navaro-shadow-medium),
+            0 0 15px var(--navaro-glow-accent);
+    }
+    
+    #joystick {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    /* Kompaktere Status-Anzeigen auf mobilen Einsatzgeräten */
+    .status-display .bg-light {
+        padding: 0.5rem !important;
+        background: var(--navaro-surface) !important;
+    }
+    
+    /* Optimierte Textgrößen für kleinere Bildschirme */
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
+}
+
+/**
+ * Navigation Header: Professionelle Markenidentität
+ */
+/**
+ * Navigation Header: Professionelle taktische Markenidentität
+ * Optimiert für 24/7-Einsätze mit minimaler Augenbelastung
+ */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.75rem;
+    letter-spacing: 1px;
+    color: var(--navaro-text-primary) !important;
+    text-shadow: 0 2px 4px var(--navaro-shadow-dark);
+}
+
+/* Navbar mit dunklem Tactical-Theme */
+.navbar-dark {
+    background: linear-gradient(135deg, var(--navaro-darker), var(--navaro-dark)) !important;
+    border-bottom: 2px solid var(--navaro-accent);
+    box-shadow: 
+        0 2px 12px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+}
+
+/**
+ * Card-Design: Robuste Container für mission-kritische Informationen
+ * Dunkles Design für optimale Lesbarkeit in verschiedenen Lichtverhältnissen
+ */
+.card {
+    border: none;
+    background: linear-gradient(145deg, var(--navaro-surface), var(--navaro-surface-light));
+    border: 1px solid var(--navaro-border-primary);
+    border-radius: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px var(--navaro-shadow-dark);
+    color: var(--navaro-text-primary);
+}
+
+/* Card-Hover: Verstärkte taktische Aufmerksamkeit */
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 8px 24px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+    border-color: var(--navaro-accent);
+}
+
+/* Card-Header für taktischen Steuerungsbereich */
+.card-header.bg-primary {
+    background: linear-gradient(135deg, var(--navaro-primary), var(--navaro-primary-dark)) !important;
+    border-bottom: 2px solid var(--navaro-accent);
+    color: var(--navaro-text-primary) !important;
+}
+
+/**
+ * Formular-Steuerelemente: Benutzerfreundliche Eingaben für taktische Umgebungen
+ * Optimiert für schnelle und präzise Bedienung unter Stress
+ */
+.form-select-sm {
+    border-radius: 0.5rem;
+    border: 2px solid var(--navaro-border-primary);
+    background-color: var(--navaro-surface);
+    color: var(--navaro-text-primary);
+    transition: all 0.3s ease;
+}
+
+/* Fokus-Zustand für verbesserte taktische Usability */
+.form-select-sm:focus {
+    border-color: var(--navaro-accent);
+    box-shadow: 0 0 0 0.25rem var(--navaro-glow-accent);
+    background-color: var(--navaro-surface-light);
+    outline: none;
+}
+
+/**
+ * Button-Design: Handlungsstarke Primär-Aktionen für kritische Operationen
+ * Hochkontrast-Design für schnelle Identifikation und Bedienung
+ */
+.btn-primary {
+    background: linear-gradient(135deg, var(--navaro-accent), var(--navaro-accent-dark));
+    border: 2px solid var(--navaro-accent-dark);
+    color: var(--navaro-dark);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 4px 12px var(--navaro-shadow-dark),
+        0 0 15px var(--navaro-glow-accent);
+}
+
+/* Button-Hover: Verstärkte taktische Interaktion */
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--navaro-accent-light), var(--navaro-accent));
+    border-color: var(--navaro-accent-light);
+    color: var(--navaro-darker);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 16px var(--navaro-shadow-dark),
+        0 0 25px var(--navaro-glow-accent);
+}
+
+/* Button-Active: Klares Feedback für Bestätigung */
+.btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 8px var(--navaro-shadow-dark),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/**
+ * Footer: Professioneller taktischer Abschluss
+ * Minimalistisches Design für konsistente Markenidentität
+ */
+.footer {
+    background: linear-gradient(135deg, var(--navaro-darker), var(--navaro-dark)) !important;
+    border-top: 2px solid var(--navaro-accent);
+    color: var(--navaro-text-primary) !important;
+    box-shadow: 0 -2px 12px var(--navaro-shadow-dark);
+}
+
+/**
+ * Badge-System: Status-Indikatoren für verschiedene Einsatzzustände
+ * Farbcodierung für schnelle Situationsbeurteilung
+ */
+.badge.bg-success {
+    background: linear-gradient(135deg, var(--navaro-success), #5A7A51) !important;
+    color: var(--navaro-text-primary) !important;
+    border: 1px solid var(--navaro-success);
+}
+
+.badge.bg-warning {
+    background: linear-gradient(135deg, var(--navaro-warning), #E68A00) !important;
+    color: var(--navaro-dark) !important;
+    border: 1px solid var(--navaro-warning);
+}
+
+.badge.bg-danger {
+    background: linear-gradient(135deg, var(--navaro-danger), #A13545) !important;
+    color: var(--navaro-text-primary) !important;
+    border: 1px solid var(--navaro-danger);
+}
+
+.badge.bg-light {
+    background: linear-gradient(135deg, var(--navaro-surface-light), var(--navaro-surface)) !important;
+    color: var(--navaro-text-primary) !important;
+    border: 1px solid var(--navaro-border-primary);
+}
+
+/**
+ * Text-Farben: Semantische Farbzuweisungen für taktische Umgebungen
+ * Optimiert für hohen Kontrast und schnelle Erkennbarkeit
+ */
+.text-success {
+    color: var(--navaro-success) !important;
+}
+
+.text-warning {
+    color: var(--navaro-warning) !important;
+}
+
+.text-danger {
+    color: var(--navaro-danger) !important;
+}
+
+.text-muted {
+    color: var(--navaro-text-muted) !important;
+}
+
+.text-primary {
+    color: var(--navaro-accent) !important;
+}
+
+.text-secondary {
+    color: var(--navaro-text-secondary) !important;
+}
+
+/**
+ * Zusätzliche dunkle Theme-Anpassungen
+ * Globale Überschreibungen für bessere Konsistenz
+ */
+
+/* Bootstrap-Überschreibungen für dunkles Theme */
+.bg-dark {
+    background-color: var(--navaro-dark) !important;
+}
+
+.bg-light {
+    background-color: var(--navaro-surface) !important;
+    color: var(--navaro-text-primary) !important;
+}
+
+.text-dark {
+    color: var(--navaro-text-primary) !important;
+}
+
+.text-light {
+    color: var(--navaro-text-secondary) !important;
+}
+
+/* Input-Felder für dunkles Theme */
+.form-control {
+    background-color: var(--navaro-surface);
+    border-color: var(--navaro-border-primary);
+    color: var(--navaro-text-primary);
+}
+
+.form-control:focus {
+    background-color: var(--navaro-surface-light);
+    border-color: var(--navaro-accent);
+    box-shadow: 0 0 0 0.25rem var(--navaro-glow-accent);
+    color: var(--navaro-text-primary);
+}
+
+/* Dropdown-Menüs für dunkles Theme */
+.dropdown-menu {
+    background-color: var(--navaro-surface);
+    border: 1px solid var(--navaro-border-primary);
+    box-shadow: 0 4px 12px var(--navaro-shadow-dark);
+}
+
+.dropdown-item {
+    color: var(--navaro-text-primary);
+}
+
+.dropdown-item:hover {
+    background-color: var(--navaro-primary);
+    color: var(--navaro-text-primary);
+}
+
+/**
+ * Scrollbar-Styling für dunkles Theme
+ * Konsistente Optik auch bei Scroll-Elementen
+ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--navaro-surface);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--navaro-primary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--navaro-accent);
+}
+
+/**
+ * Responsives Video-Interface für automatische Bildschirmanpassung
+ * Optimiert für verschiedene Geräte und Bildschirmgrößen
+ */
+
+/* Hauptvideo-Container - Vollständig responsiv */
+.video-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Video-Ratio Container - Anpassung an verschiedene Bildschirmgrößen */
+.video-container .ratio {
+    transition: all 0.3s ease;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 
+        0 8px 24px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+}
+
+/* Video-Element Styling */
+.video-container video {
+    border-radius: 0.75rem;
+    border: 2px solid var(--navaro-border-primary);
+    background: var(--navaro-surface);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Hover-Effekt für verbesserte Interaktivität */
+.video-container:hover .ratio {
+    box-shadow: 
+        0 12px 32px var(--navaro-shadow-dark),
+        0 0 30px var(--navaro-glow-accent);
+    border-color: var(--navaro-accent);
+    transform: scale(1.02);
+}
+
+/**
+ * Responsive Anpassungen für optimale Darstellung
+ * Automatische Skalierung basierend auf Bildschirmgröße
+ */
+
+/* Desktop und große Tablets (über 1200px) */
+@media (min-width: 1200px) {
+    .video-container .ratio {
+        border: 3px solid var(--navaro-border-primary);
+        box-shadow: 
+            0 12px 40px var(--navaro-shadow-dark),
+            0 0 40px var(--navaro-glow-accent);
+    }
+}
+
+/* Tablets und mittlere Bildschirme (768px - 1199px) */
+@media (min-width: 768px) and (max-width: 1199px) {
+    .video-container .ratio {
+        border-width: 2px;
+        box-shadow: 
+            0 8px 24px var(--navaro-shadow-dark),
+            0 0 25px var(--navaro-glow-accent);
+    }
+}
+
+/* Mobile Geräte (unter 768px) */
+@media (max-width: 767px) {
+    .video-container {
+        margin: 0.5rem 0;
+    }
+    
+    .video-container .ratio {
+        border-width: 1px;
+        border-radius: 0.5rem;
+        box-shadow: 
+            0 4px 16px var(--navaro-shadow-dark),
+            0 0 15px var(--navaro-glow-accent);
+    }
+    
+    .video-container video {
+        border-radius: 0.5rem;
+    }
+    
+    /* Reduzierte Hover-Effekte auf Touch-Geräten */
+    .video-container:hover .ratio {
+        transform: none;
+    }
+}

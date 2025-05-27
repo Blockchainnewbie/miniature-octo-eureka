@@ -1,0 +1,783 @@
+/**
+ * Navaro Login System - Dark Tactical Theme
+ * Speziell entwickelt für sicheren Zugang zu Rettungs- und Erkundungsmissionen
+ * Optimiert für 24/7-Einsätze mit reduzierter Augenbelastung
+ */
+
+:root {
+    /* Haupt-Farbpalette für dunkle Rettungs- & Erkundungsumgebung */
+    --navaro-primary: #3A4D39;        /* Dunkler Schiefer-Grün */
+    --navaro-primary-dark: #2A3529;   /* Sehr dunkler Schiefer */
+    --navaro-primary-light: #4A5D49;  /* Hellerer Schiefer */
+    
+    --navaro-secondary: #1F2F1F;      /* Tiefes Tannengrün */
+    --navaro-secondary-light: #2F3F2F; /* Helles Tannengrün */
+    
+    --navaro-accent: #FF8C42;         /* Bernstein-Orange */
+    --navaro-accent-light: #FFA366;   /* Helles Bernstein */
+    --navaro-accent-dark: #E67B2E;    /* Dunkles Bernstein */
+    
+    --navaro-dark: #1E1E1E;          /* Anthrazit-Schwarz (Haupthintergrund) */
+    --navaro-darker: #141414;        /* Tiefschwarz */
+    --navaro-surface: #2A2A2A;       /* Dunkler Granit (Oberflächenelemente) */
+    --navaro-surface-light: #353535; /* Hellere Oberfläche */
+    
+    --navaro-warning: #CC7A00;        /* Rost-Orange */
+    --navaro-success: #4A6741;        /* Taktisches Grün */
+    --navaro-danger: #8B2635;         /* Dunkles Rot */
+    
+    --navaro-text-primary: #E8D5B7;   /* Warmes Beige (Haupttext) */
+    --navaro-text-secondary: #B8A082; /* Gedämpftes Beige (Sekundärtext) */
+    --navaro-text-muted: #8A7B6B;     /* Gedämpfter Text */
+    
+    /* Schatten und Transparenzen für dunkles Theme */
+    --navaro-shadow-light: rgba(255, 140, 66, 0.1);
+    --navaro-shadow-medium: rgba(0, 0, 0, 0.3);
+    --navaro-shadow-dark: rgba(0, 0, 0, 0.5);
+    --navaro-glow-accent: rgba(255, 140, 66, 0.3);
+    --navaro-glow-primary: rgba(58, 77, 57, 0.4);
+    
+    /* Border-Farben für dunkles Theme */
+    --navaro-border-primary: #4A5D49;
+    --navaro-border-secondary: #2F3F2F;
+    --navaro-border-accent: #FF8C42;
+}
+
+/**
+ * Globales Login-Body Styling
+ * Vollbildschirm-Interface für taktische Sicherheit
+ */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--navaro-darker) 0%, var(--navaro-dark) 50%, var(--navaro-primary-dark) 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--navaro-text-primary);
+    position: relative;
+}
+
+/**
+ * Hintergrund-Effekte für taktische Atmosphäre
+ * Subtile Animationen für professionelle Ästhetik
+ */
+.background-effects {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Taktisches Gitter-Overlay */
+.grid-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 140, 66, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 140, 66, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.3;
+    animation: gridPulse 8s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+}
+
+/* Schwebende Partikel für Tiefe */
+.floating-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.particle {
+    position: absolute;
+    background: var(--navaro-accent);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 15s infinite linear;
+}
+
+.particle:nth-child(1) {
+    width: 3px;
+    height: 3px;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+    width: 2px;
+    height: 2px;
+    left: 70%;
+    animation-delay: 3s;
+}
+
+.particle:nth-child(3) {
+    width: 4px;
+    height: 4px;
+    left: 30%;
+    animation-delay: 6s;
+}
+
+.particle:nth-child(4) {
+    width: 2px;
+    height: 2px;
+    left: 90%;
+    animation-delay: 9s;
+}
+
+.particle:nth-child(5) {
+    width: 3px;
+    height: 3px;
+    left: 50%;
+    animation-delay: 12s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/**
+ * Haupt-Login-Container
+ * Zentrierte taktische Benutzeroberfläche
+ */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/**
+ * Login-Header: Professionelle Markenidentität
+ * Sicherheitsorientierte Darstellung
+ */
+.login-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: slideDown 1s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.logo-container i {
+    font-size: 3rem;
+    color: var(--navaro-accent);
+    margin-right: 1rem;
+    text-shadow: 
+        0 0 20px var(--navaro-glow-accent),
+        0 0 40px var(--navaro-glow-accent);
+    animation: iconGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes iconGlow {
+    from {
+        text-shadow: 
+            0 0 20px var(--navaro-glow-accent),
+            0 0 40px var(--navaro-glow-accent);
+    }
+    to {
+        text-shadow: 
+            0 0 30px var(--navaro-glow-accent),
+            0 0 60px var(--navaro-glow-accent),
+            0 0 80px var(--navaro-accent);
+    }
+}
+
+.logo-container h1 {
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: 4px;
+    margin: 0;
+    background: linear-gradient(135deg, var(--navaro-accent), var(--navaro-accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px var(--navaro-shadow-dark);
+}
+
+.tagline {
+    font-size: 1.1rem;
+    color: var(--navaro-text-secondary);
+    letter-spacing: 2px;
+    margin: 0;
+    font-weight: 300;
+}
+
+/**
+ * Login-Formular Container
+ * Sichere und benutzerfreundliche Authentifizierung
+ */
+.login-form-container {
+    background: linear-gradient(145deg, var(--navaro-surface), var(--navaro-surface-light));
+    border: 2px solid var(--navaro-border-primary);
+    border-radius: 1rem;
+    padding: 3rem 2.5rem;
+    box-shadow: 
+        0 20px 60px var(--navaro-shadow-dark),
+        0 0 30px var(--navaro-glow-primary),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 420px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    animation: slideUp 1s ease-out 0.3s both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 140, 66, 0.1), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/**
+ * Formular-Styling
+ * Taktische Eingabefelder für sichere Authentifizierung
+ */
+.login-form {
+    position: relative;
+    z-index: 2;
+}
+
+.form-title {
+    text-align: center;
+    color: var(--navaro-text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.form-title i {
+    color: var(--navaro-accent);
+    font-size: 1.3rem;
+}
+
+/**
+ * Formular-Gruppen und Eingabefelder
+ * Optimiert für schnelle und präzise Eingabe
+ */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--navaro-text-secondary);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-label i {
+    color: var(--navaro-accent);
+    width: 16px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: var(--navaro-dark);
+    border: 2px solid var(--navaro-border-secondary);
+    border-radius: 0.5rem;
+    color: var(--navaro-text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px var(--navaro-shadow-medium);
+}
+
+.form-control::placeholder {
+    color: var(--navaro-text-muted);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--navaro-accent);
+    background: var(--navaro-surface);
+    box-shadow: 
+        inset 0 2px 4px var(--navaro-shadow-medium),
+        0 0 0 4px var(--navaro-glow-accent);
+    transform: translateY(-1px);
+}
+
+/**
+ * Input-Unterlines für visuelles Feedback
+ */
+.input-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--navaro-accent);
+    transition: width 0.3s ease;
+}
+
+.form-control:focus + .input-underline {
+    width: 100%;
+}
+
+/**
+ * Password-Container mit Toggle-Button
+ * Sichere Passwort-Eingabe mit Sichtbarkeitskontrolle
+ */
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--navaro-text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--navaro-accent);
+    background: rgba(255, 140, 66, 0.1);
+}
+
+/**
+ * Checkbox-Styling für "Remember Me"
+ * Benutzerdefinierte taktische Checkbox
+ */
+.checkbox-group {
+    margin-bottom: 2rem;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    color: var(--navaro-text-secondary);
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.checkbox-container input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    background: var(--navaro-dark);
+    border: 2px solid var(--navaro-border-secondary);
+    border-radius: 0.25rem;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkmark::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid var(--navaro-accent);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform 0.2s ease;
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkmark {
+    background: var(--navaro-primary);
+    border-color: var(--navaro-accent);
+}
+
+.checkbox-container input[type="checkbox"]:checked + .checkmark::after {
+    transform: rotate(45deg) scale(1);
+}
+
+.checkbox-container:hover .checkmark {
+    border-color: var(--navaro-accent);
+    box-shadow: 0 0 10px var(--navaro-glow-accent);
+}
+
+/**
+ * Login-Button: Primäre Authentifizierungs-Aktion
+ * Hochkontrast für kritische Sicherheitsfunktion
+ */
+.btn-login {
+    width: 100%;
+    padding: 1.25rem;
+    background: linear-gradient(135deg, var(--navaro-accent), var(--navaro-accent-dark));
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--navaro-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    box-shadow: 
+        0 4px 15px var(--navaro-shadow-dark),
+        0 0 20px var(--navaro-glow-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-login:hover {
+    background: linear-gradient(135deg, var(--navaro-accent-light), var(--navaro-accent));
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 25px var(--navaro-shadow-dark),
+        0 0 30px var(--navaro-glow-accent);
+}
+
+.btn-login:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 10px var(--navaro-shadow-dark),
+        inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-login:disabled {
+    background: var(--navaro-surface);
+    color: var(--navaro-text-muted);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/**
+ * Loading-Spinner für Authentifizierungs-Feedback
+ */
+.loading-spinner {
+    display: none;
+    margin-left: 0.5rem;
+}
+
+.btn-login.loading .loading-spinner {
+    display: inline-block;
+}
+
+.btn-login.loading span {
+    display: none;
+}
+
+/**
+ * Alert-Container für Benachrichtigungen
+ * Statusmeldungen für Authentifizierungs-Feedback
+ */
+.alert-container {
+    margin-bottom: 1.5rem;
+    min-height: 0;
+    transition: all 0.3s ease;
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.alert-success {
+    background: linear-gradient(135deg, var(--navaro-success), #5A7A51);
+    color: var(--navaro-text-primary);
+    border-left: 4px solid var(--navaro-accent);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, var(--navaro-danger), #A13545);
+    color: var(--navaro-text-primary);
+    border-left: 4px solid var(--navaro-warning);
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, var(--navaro-warning), #E68A00);
+    color: var(--navaro-dark);
+    border-left: 4px solid var(--navaro-accent);
+}
+
+/**
+ * Formular-Footer: Zusätzliche Optionen
+ * Hilfsfunktionen und Unterstützung
+ */
+.form-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--navaro-border-secondary);
+    text-align: center;
+}
+
+.forgot-password {
+    color: var(--navaro-accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.forgot-password:hover {
+    color: var(--navaro-accent-light);
+    text-decoration: underline;
+}
+
+.divider {
+    height: 1px;
+    background: var(--navaro-border-secondary);
+    margin: 1rem 0;
+}
+
+.help-text {
+    color: var(--navaro-text-muted);
+    font-size: 0.8rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+}
+
+/**
+ * Sicherheits-Footer: Vertrauensbildende Elemente
+ * Professionelle Sicherheitsindikatoren
+ */
+.security-footer {
+    margin-top: 3rem;
+    text-align: center;
+    animation: fadeIn 1s ease-out 0.6s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.security-badges {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.security-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--navaro-text-secondary);
+    font-size: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.security-badge:hover {
+    color: var(--navaro-accent);
+    transform: translateY(-2px);
+}
+
+.security-badge i {
+    font-size: 1.5rem;
+    color: var(--navaro-accent);
+    margin-bottom: 0.25rem;
+}
+
+.copyright {
+    color: var(--navaro-text-muted);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/**
+ * Responsive Design für verschiedene Bildschirmgrößen
+ * Mobile-optimierte taktische Benutzeroberfläche
+ */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 1rem;
+    }
+    
+    .login-form-container {
+        padding: 2rem 1.5rem;
+        margin: 1rem 0;
+    }
+    
+    .logo-container h1 {
+        font-size: 2.5rem;
+    }
+    
+    .logo-container i {
+        font-size: 2rem;
+        margin-right: 0.5rem;
+    }
+    
+    .security-badges {
+        gap: 1rem;
+    }
+    
+    .security-badge {
+        font-size: 0.7rem;
+    }
+    
+    .security-badge i {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-header {
+        margin-bottom: 2rem;
+    }
+    
+    .logo-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .logo-container i {
+        margin-right: 0;
+    }
+    
+    .logo-container h1 {
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+    
+    .tagline {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+    
+    .security-badges {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+/**
+ * High-Contrast Modus für bessere Accessibility
+ * Erweiterte Sichtbarkeit bei kritischen Einsätzen
+ */
+@media (prefers-contrast: high) {
+    .form-control {
+        border-width: 3px;
+    }
+    
+    .btn-login {
+        border: 2px solid var(--navaro-accent-dark);
+    }
+    
+    .checkmark {
+        border-width: 3px;
+    }
+}
+
+/**
+ * Reduced Motion für bessere Accessibility
+ * Respektiert Benutzereinstellungen für Animationen
+ */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .floating-particles {
+        display: none;
+    }
+}

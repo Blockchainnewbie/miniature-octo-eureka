@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navaro - Navigate, Rescue, Repeat</title>
+    <!-- Bootstrap CSS -->
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body class="bg-dark">
+    <!-- Navbar / Header mit dunklem Tactical-Theme -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-shield-alt me-2"></i>Navaro
+                <small class="badge bg-warning ms-2">Tactical</small>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" 
+                    aria-expanded="false" aria-label="Navigation umschalten">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-info-circle me-1"></i>Über uns
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-tools me-1"></i>Services
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="fas fa-envelope me-1"></i>Kontakt
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="handleLogout()" title="Abmelden">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hauptinhalt mit Sidebar -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-map me-2"></i>Karten
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-route me-2"></i>Routen planen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-cog me-2"></i>Einstellungen
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-video me-2"></i>Live-Stream
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-chart-line me-2"></i>Statistiken
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Status-Panel in der Sidebar -->
+                    <div class="mt-4 p-3 bg-white rounded shadow-sm">
+                        <h6 class="text-muted mb-2">Fahrzeug-Status</h6>
+                        <div class="small">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Verbindung:</span>
+                                <span class="badge bg-success">Online</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Batterie:</span>
+                                <span class="text-success">87%</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span>Signal:</span>
+                                <span class="text-success">Stark</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hauptinhalt -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Navaro - Navigate, Rescue, Repeat</h1>
+                </div>
+                <section id="content" class="my-3">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Willkommen bei Navaro</h5>
+                            <p class="card-text">Ferngesteuerte Fahrzeugnavigation mit Live-Video-Stream und präziser Joystick-Steuerung für Rettungs- und Erkundungsmissionen.</p>
+                            <a href="#" class="btn btn-primary">Live-Stream starten</a>
+                        </div>
+                    </div>
+
+                    <!-- Responsives Video-Interface -->
+                    <div class="container-fluid my-4">
+                        <!-- Video und Steuerung nebeneinander -->
+                        <div class="row g-4">
+                            <!-- Video-Bereich (linke Seite) - Automatisch responsive -->
+                            <div class="col-lg-8 col-md-7">
+                                <div class="video-container">
+                                    <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
+                                        <video controls class="bg-dark">
+                                            <source src="video.mp4" type="video/mp4">
+                                            <div class="d-flex align-items-center justify-content-center h-100 text-white">
+                                                <div class="text-center">
+                                                    <i class="fas fa-video fa-3x mb-3"></i>
+                                                    <p>Video wird geladen...</p>
+                                                </div>
+                                            </div>
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Steuerungsbereich (rechte Seite) -->
+                            <div class="col-lg-4 col-md-5">
+                                <div class="card h-100 shadow-sm">
+                                    <div class="card-header bg-primary text-white">
+                                        <h5 class="card-title mb-0">
+                                            <i class="fas fa-gamepad me-2"></i>Fahrzeugsteuerung
+                                        </h5>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <p class="card-text mb-4">Verwenden Sie den Joystick zur präzisen Steuerung des Fahrzeugs.</p>
+                                        
+                                        <!-- Joystick-Container -->
+                                        <div class="d-flex justify-content-center mb-4">
+                                            <div class="joystick-container position-relative" style="width: 180px; height: 180px; background: linear-gradient(145deg, #f0f0f0, #e0e0e0); border-radius: 50%; box-shadow: inset 5px 5px 10px #d0d0d0, inset -5px -5px 10px #ffffff; touch-action: none;">
+                                                <div id="joystick" class="position-absolute bg-primary shadow" style="width: 50px; height: 50px; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); cursor: grab; transition: box-shadow 0.1s;"></div>
+                                                <!-- Kreuzmarkierungen für bessere Orientierung -->
+                                                <div class="position-absolute" style="top: 10px; left: 50%; transform: translateX(-50%); color: #999; font-size: 12px;">↑</div>
+                                                <div class="position-absolute" style="bottom: 10px; left: 50%; transform: translateX(-50%); color: #999; font-size: 12px;">↓</div>
+                                                <div class="position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); color: #999; font-size: 12px;">←</div>
+                                                <div class="position-absolute" style="right: 10px; top: 50%; transform: translateY(-50%); color: #999; font-size: 12px;">→</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Status-Anzeige -->
+                                        <div class="status-display mb-4">
+                                            <div class="row text-center g-2">
+                                                <div class="col-4">
+                                                    <div class="bg-light rounded p-2">
+                                                        <small class="text-muted d-block">Position</small>
+                                                        <span id="joystickPosition" class="fw-bold">X:0, Y:0</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="bg-light rounded p-2">
+                                                        <small class="text-muted d-block">Geschw.</small>
+                                                        <span id="speed" class="fw-bold text-success">0%</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="bg-light rounded p-2">
+                                                        <small class="text-muted d-block">Status</small>
+                                                        <span id="direction" class="fw-bold text-warning">Stopp</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Steuerungsanleitung -->
+                                        <div class="mt-auto">
+                                            <h6 class="text-muted mb-2">Steuerung:</h6>
+                                            <div class="row g-1 text-center">
+                                                <div class="col-6">
+                                                    <small class="badge bg-light text-dark">↑ Vorwärts</small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="badge bg-light text-dark">↓ Rückwärts</small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="badge bg-light text-dark">← Links</small>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="badge bg-light text-dark">→ Rechts</small>
+                                                </div>
+                                            </div>
+                                            <small class="text-muted mt-2 d-block text-center">Entfernung = Geschwindigkeit</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const joystick = document.getElementById('joystick');
+                            const container = joystick.parentElement;
+                            const positionOutput = document.getElementById('joystickPosition');
+                            const speedOutput = document.getElementById('speed');
+                            const directionOutput = document.getElementById('direction');
+                            
+                            let active = false;
+                            let offsetX, offsetY;
+                            let containerRect;
+                            
+                            // Joystick-Grenzen berechnen
+                            const updateLimits = () => {
+                                containerRect = container.getBoundingClientRect();
+                            };
+                            
+                            updateLimits();
+                            window.addEventListener('resize', updateLimits);
+                            
+                            // Start des Joystick-Ziehens
+                            joystick.addEventListener('mousedown', (e) => {
+                                active = true;
+                                containerRect = container.getBoundingClientRect();
+                                const joystickRect = joystick.getBoundingClientRect();
+                                
+                                // Offset innerhalb des Joysticks
+                                offsetX = e.clientX - joystickRect.left - joystickRect.width / 2;
+                                offsetY = e.clientY - joystickRect.top - joystickRect.height / 2;
+                                
+                                joystick.style.cursor = 'grabbing';
+                            });
+                            
+                            // Joystick-Bewegung
+                            document.addEventListener('mousemove', (e) => {
+                                if (active) {
+                                    e.preventDefault();
+                                    
+                                    // Position des Joysticks im Container
+                                    const centerX = containerRect.width / 2;
+                                    const centerY = containerRect.height / 2;
+                                    const maxRadius = (containerRect.width - joystick.offsetWidth) / 2;
+                                    
+                                    let deltaX = e.clientX - containerRect.left - centerX - offsetX;
+                                    let deltaY = e.clientY - containerRect.top - centerY - offsetY;
+                                    
+                                    // Begrenzung auf den Radius
+                                    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+                                    if (distance > maxRadius) {
+                                        const angle = Math.atan2(deltaY, deltaX);
+                                        deltaX = Math.cos(angle) * maxRadius;
+                                        deltaY = Math.sin(angle) * maxRadius;
+                                    }
+                                    
+                                    // Position setzen
+                                    joystick.style.left = (centerX + deltaX) + 'px';
+                                    joystick.style.top = (centerY + deltaY) + 'px';
+                                    joystick.style.transform = 'translate(-50%, -50%)';
+                                    
+                                    // Normalisierte Werte (-1 bis 1) berechnen
+                                    const normalizedX = deltaX / maxRadius;
+                                    const normalizedY = -deltaY / maxRadius; // Y-Achse umkehren
+                                    
+                                    // Geschwindigkeit berechnen (0-100%)
+                                    const speed = Math.round((distance / maxRadius) * 100);
+                                    
+                                    // Richtung bestimmen
+                                    let direction = 'Stopp';
+                                    if (speed > 5) {
+                                        if (normalizedY > 0.5) direction = 'Vorwärts';
+                                        else if (normalizedY < -0.5) direction = 'Rückwärts';
+                                        else if (normalizedX > 0.5) direction = 'Rechts';
+                                        else if (normalizedX < -0.5) direction = 'Links';
+                                        else direction = 'Diagonal';
+                                    }
+                                    
+                                    // UI aktualisieren
+                                    positionOutput.textContent = `X:${normalizedX.toFixed(1)}, Y:${normalizedY.toFixed(1)}`;
+                                    speedOutput.textContent = `${speed}%`;
+                                    directionOutput.textContent = direction;
+                                    
+                                    // Farben basierend auf Status
+                                    speedOutput.className = speed > 50 ? 'fw-bold text-danger' : speed > 20 ? 'fw-bold text-warning' : 'fw-bold text-success';
+                                    directionOutput.className = direction === 'Stopp' ? 'fw-bold text-warning' : 'fw-bold text-info';
+                                }
+                            });
+                            
+                            // Joystick loslassen
+                            document.addEventListener('mouseup', () => {
+                                if (active) {
+                                    active = false;
+                                    
+                                    // Joystick zum Mittelpunkt zurücksetzen
+                                    joystick.style.left = '50%';
+                                    joystick.style.top = '50%';
+                                    joystick.style.transform = 'translate(-50%, -50%)';
+                                    joystick.style.cursor = 'grab';
+                                    
+                                    // UI zurücksetzen
+                                    positionOutput.textContent = 'X:0, Y:0';
+                                    speedOutput.textContent = '0%';
+                                    speedOutput.className = 'fw-bold text-success';
+                                    directionOutput.textContent = 'Stopp';
+                                    directionOutput.className = 'fw-bold text-warning';
+                                }
+                            });
+                            
+                            // Touch-Events für mobile Geräte
+                            joystick.addEventListener('touchstart', (e) => {
+                                e.preventDefault();
+                                const touch = e.touches[0];
+                                const mouseEvent = new MouseEvent('mousedown', {
+                                    clientX: touch.clientX,
+                                    clientY: touch.clientY
+                                });
+                                joystick.dispatchEvent(mouseEvent);
+                            });
+                            
+                            document.addEventListener('touchmove', (e) => {
+                                if (active) {
+                                    e.preventDefault();
+                                    const touch = e.touches[0];
+                                    const mouseEvent = new MouseEvent('mousemove', {
+                                        clientX: touch.clientX,
+                                        clientY: touch.clientY
+                                    });
+                                    document.dispatchEvent(mouseEvent);
+                                }
+                            });
+                            
+                            document.addEventListener('touchend', (e) => {
+                                if (active) {
+                                    e.preventDefault();
+                                    const mouseEvent = new MouseEvent('mouseup', {});
+                                    document.dispatchEvent(mouseEvent);
+                                }
+                            });
+                        });
+                    </script>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer mt-auto py-3 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 Navaro. Alle Rechte vorbehalten.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p>Navigate, Rescue, Repeat</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JavaScript Bundle with Popper -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    
+    <!-- Session Management und Logout-Funktionalität -->
+    <script>
+        // Session-Überprüfung beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuthentication();
+        });
+        
+        /**
+         * Authentifizierungs-Überprüfung
+         * Prüft gültige Session oder leitet zum Login weiter
+         */
+        function checkAuthentication() {
+            const sessionToken = localStorage.getItem('navaro_session_token');
+            const sessionExpiry = parseInt(localStorage.getItem('navaro_session_expiry') || '0');
+            const userData = localStorage.getItem('navaro_user_data');
+            
+            const now = Date.now();
+            
+            if (!sessionToken || sessionExpiry < now || !userData) {
+                console.log('🔒 Keine gültige Session - Weiterleitung zum Login');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            try {
+                const user = JSON.parse(userData);
+                console.log('✅ Session gültig für Benutzer:', user.username);
+                
+                // Benutzername in der Navbar anzeigen (optional)
+                updateNavbarWithUser(user);
+                
+                // Session-Timeout warnung
+                setupSessionWarning(sessionExpiry);
+                
+            } catch (error) {
+                console.error('❌ Fehler beim Parsen der Benutzerdaten:', error);
+                handleLogout();
+            }
+        }
+        
+        /**
+         * Logout-Behandlung
+         * Bereinigt Session und leitet zum Login weiter
+         */
+        function handleLogout() {
+            console.log('🚪 Logout durchgeführt');
+            
+            // Alle Session-Daten entfernen
+            ['navaro_session_token', 'navaro_session_expiry', 'navaro_user_data'].forEach(key => {
+                localStorage.removeItem(key);
+            });
+            
+            // Optional: Remember Me Daten beibehalten
+            // localStorage.removeItem('navaro_remember_me');
+            // localStorage.removeItem('navaro_saved_username');
+            
+            // Weiterleitung zum Login
+            window.location.href = 'login.html';
+        }
+        
+        /**
+         * Navbar mit Benutzerdaten aktualisieren
+         * Zeigt aktuellen Benutzer an
+         */
+        function updateNavbarWithUser(user) {
+            const logoutLink = document.querySelector('a[onclick="handleLogout()"]');
+            if (logoutLink) {
+                // Benutzername neben Logout anzeigen
+                logoutLink.innerHTML = `<i class="fas fa-user me-1"></i>${user.username} <i class="fas fa-sign-out-alt ms-2"></i>`;
+                logoutLink.title = `Abmelden (${user.role})`;
+            }
+        }
+        
+        /**
+         * Session-Timeout Warnung
+         * Warnt vor Ablauf der Session
+         */
+        function setupSessionWarning(sessionExpiry) {
+            const warningTime = 5 * 60 * 1000; // 5 Minuten vor Ablauf
+            const now = Date.now();
+            const timeToWarning = sessionExpiry - warningTime - now;
+            
+            if (timeToWarning > 0) {
+                setTimeout(() => {
+                    const remainingMinutes = Math.ceil((sessionExpiry - Date.now()) / 60000);
+                    if (remainingMinutes > 0) {
+                        const confirmed = confirm(`Ihre Session läuft in ${remainingMinutes} Minute(n) ab. Möchten Sie sie verlängern?`);
+                        if (confirmed) {
+                            // Session verlängern
+                            const newExpiry = Date.now() + (30 * 60 * 1000); // 30 Minuten
+                            localStorage.setItem('navaro_session_expiry', newExpiry.toString());
+                            setupSessionWarning(newExpiry);
+                        }
+                    }
+                }, timeToWarning);
+            }
+        }
+        
+        /**
+         * Automatische Session-Verlängerung bei Aktivität
+         * Verlängert Session bei Benutzeraktivität
+         */
+        let activityTimer;
+        function resetActivityTimer() {
+            clearTimeout(activityTimer);
+            activityTimer = setTimeout(() => {
+                const sessionExpiry = parseInt(localStorage.getItem('navaro_session_expiry') || '0');
+                if (sessionExpiry > Date.now()) {
+                    // Session bei Aktivität verlängern
+                    const newExpiry = Date.now() + (30 * 60 * 1000);
+                    localStorage.setItem('navaro_session_expiry', newExpiry.toString());
+                }
+            }, 60000); // 1 Minute nach letzter Aktivität
+        }
+        
+        // Event-Listener für Benutzeraktivität
+        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'].forEach(event => {
+            document.addEventListener(event, resetActivityTimer, { passive: true });
+        });
+        
+        // Session-Überprüfung beim Laden des Dashboards
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🛡️ Navaro Dashboard initialisiert');
+            
+            // Überprüfe Session-Gültigkeit
+            const sessionToken = localStorage.getItem('navaro_session_token');
+            const sessionExpiry = parseInt(localStorage.getItem('navaro_session_expiry') || '0');
+            const userInfo = JSON.parse(localStorage.getItem('navaro_user_info') || '{}');
+            
+            if (!sessionToken || sessionExpiry <= Date.now()) {
+                console.log('❌ Keine gültige Session - Weiterleitung zum Login');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            console.log('✅ Gültige Session gefunden');
+            
+            // Benutzerinformationen in Navbar anzeigen
+            updateNavbarWithUser(userInfo);
+            
+            // Session-Warnung einrichten
+            setupSessionWarning(sessionExpiry);
+            
+            // Aktivitäts-Timer starten
+            resetActivityTimer();
+        });
+        
+        /**
+         * Logout-Handler
+         * Löscht Session und leitet zum Login weiter
+         */
+        function handleLogout() {
+            console.log('🚪 Benutzer meldet sich ab');
+            
+            // Session-Daten löschen
+            localStorage.removeItem('navaro_session_token');
+            localStorage.removeItem('navaro_session_expiry');
+            localStorage.removeItem('navaro_user_info');
+            localStorage.removeItem('navaro_remember_me');
+            
+            // Login-Versuche zurücksetzen
+            localStorage.removeItem('navaro_login_attempts');
+            localStorage.removeItem('navaro_last_attempt');
+            
+            alert('Sie wurden erfolgreich abgemeldet.');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
