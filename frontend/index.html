@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web App</title>
+    <title>NAVARO - Weiterleitung zur Anmeldung</title>
     <link rel="stylesheet" href="main.css">
+    <script>
+        // Prüfe ob Benutzer bereits eingeloggt ist
+        import authController from './controllers/authController.js';
+        
+        // Wenn authentifiziert, zum Dashboard weiterleiten
+        if (authController.isAuthenticated()) {
+            window.location.href = "src/views/dashboard/dashboard.html";
+        } else {
+            // Ansonsten zur Login-Seite weiterleiten
+            window.location.href = "src/views/auth/login.html";
+        }
+    </script>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Web App</h1>
-    </header>
-    <main>
-        <section id="content">
-            <!-- Content will be injected here -->
-        </section>
-    </main>
-    <script src="script.js"></script>
+    <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h1>NAVARO</h1>
+        <p>Sie werden zur Anmeldeseite weitergeleitet...</p>
+        <p>Falls die Weiterleitung nicht funktioniert, <a href="src/views/auth/login.html">klicken Sie hier</a>.</p>
+    </div>
 </body>
 </html>

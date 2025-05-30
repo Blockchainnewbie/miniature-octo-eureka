@@ -135,11 +135,15 @@ celerybeat.pid
 # Environments
 .env
 .venv
+.venv2
 env/
 venv/
+venv2/
 ENV/
 env.bak/
 venv.bak/
+
+*.sh
 
 # but track the example file
 !.env.example

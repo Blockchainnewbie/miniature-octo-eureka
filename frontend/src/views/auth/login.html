@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navaro - Secure Login</title>
+    <!-- Externe Stylesheets: Bootstrap für Basis-Styling, Font Awesome für Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Benutzerdefiniertes Stylesheet für die Login-Seite -->
+    <link href="../../../login.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Hintergrundeffekte-Container -->
+    <div class="background-effects">
+        <!-- Gitter-Overlay für einen technischen Look -->
+        <div class="grid-overlay"></div>
+        <!-- Schwebende Partikel für dynamischen Hintergrund -->
+        <div class="floating-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Hauptcontainer für den Login-Bereich -->
+    <div class="login-container">
+        <!-- Kopfbereich des Logins -->
+        <div class="login-header">
+            <!-- Logo-Container mit Icon und Markenname -->
+            <div class="logo-container">
+                <i class="fas fa-shield-alt"></i> <!-- Schild-Icon -->
+                <h1>NAVARO</h1> <!-- Markenname -->
+            </div>
+            <!-- Tagline oder Untertitel -->
+            <p class="tagline">Tactical Mission Control Access</p>
+        </div>
+
+        <!-- Container für das Login-Formular -->
+        <div class="login-form-container">
+            <!-- Das eigentliche Login-Formular -->
+            <form id="loginForm" class="login-form">
+                <!-- Titel des Formulars -->
+                <h2 class="form-title">
+                    <i class="fas fa-user-shield"></i> <!-- Benutzer-Schild-Icon -->
+                    Secure Authentication
+                </h2>
+
+                <!-- Container für Alert-Nachrichten (Fehler, Erfolg, Warnungen) -->
+                <div id="alertContainer" class="alert-container"></div>
+
+                <!-- Formulargruppe für den Benutzernamen -->
+                <div class="form-group">
+                    <label for="username" class="form-label">
+                        <i class="fas fa-user"></i> <!-- Benutzer-Icon -->
+                        Username
+                    </label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username" 
+                        class="form-control" 
+                        placeholder="Enter your username"
+                        required
+                        autocomplete="username"> <!-- Autocomplete für bessere UX -->
+                    <div class="input-underline"></div> <!-- Visuelles Element unter dem Input -->
+                </div>
+
+                <!-- Formulargruppe für das Passwort -->
+                <div class="form-group">
+                    <label for="password" class="form-label">
+                        <i class="fas fa-lock"></i> <!-- Schloss-Icon -->
+                        Password
+                    </label>
+                    <!-- Container für Passwort-Input und Toggle-Button -->
+                    <div class="password-container">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"> <!-- Autocomplete für aktuelle Passwörter -->
+                        <!-- Button zum Umschalten der Passwort-Sichtbarkeit -->
+                        <button type="button" class="password-toggle" id="passwordToggle" aria-label="Passwort anzeigen/verbergen">
+                            <i class="fas fa-eye"></i> <!-- Auge-Icon (Standard) -->
+                        </button>
+                    </div>
+                    <div class="input-underline"></div> <!-- Visuelles Element unter dem Input -->
+                </div>
+
+                <!-- Formulargruppe für "Remember Me" Checkbox -->
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="rememberMe" name="rememberMe">
+                        <span class="checkmark"></span> <!-- Benutzerdefinierte Checkbox-Optik -->
+                        Remember me for 30 days
+                    </label>
+                </div>
+
+                <!-- Login-Button -->
+                <button type="submit" class="btn-login" id="loginButton">
+                    <i class="fas fa-sign-in-alt"></i> <!-- Login-Icon -->
+                    <span>Access Mission Control</span> <!-- Button-Text -->
+                    <!-- Lade-Spinner, der bei Bedarf angezeigt wird -->
+                    <div class="loading-spinner" id="loadingSpinner">
+                        <i class="fas fa-spinner fa-spin"></i> <!-- Font Awesome Spinner-Icon -->
+                    </div>
+                </button>
+
+                <!-- Fußbereich des Formulars mit zusätzlichen Optionen -->
+                <div class="form-footer">
+                    <!-- Link für "Passwort vergessen" -->
+                    <a href="#" class="forgot-password">
+                        <i class="fas fa-question-circle"></i> <!-- Fragezeichen-Icon -->
+                        Forgot Password?
+                    </a>
+                    <div class="divider"></div> <!-- Trennlinie -->
+                    <!-- Hilfetext für Benutzer -->
+                    <p class="help-text">
+                        <i class="fas fa-info-circle"></i> <!-- Info-Icon -->
+                        Need access? Contact your system administrator
+                    </p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sicherheits-Footer-Bereich -->
+        <div class="security-footer">
+            <!-- Container für Sicherheits-Badges -->
+            <div class="security-badges">
+                <div class="security-badge">
+                    <i class="fas fa-shield-virus"></i> <!-- Viren-Schild-Icon (symbolisch für Verschlüsselung) -->
+                    <span>Encrypted</span>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-user-lock"></i> <!-- Benutzer-Schloss-Icon (symbolisch für Sicherheit) -->
+                    <span>Secure</span>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-clock"></i> <!-- Uhr-Icon (symbolisch für Überwachung) -->
+                    <span>24/7 Monitored</span>
+                </div>
+            </div>
+            <!-- Copyright-Hinweis -->
+            <p class="copyright">
+                © 2025 Navaro Tactical Systems. All rights reserved.
+            </p>
+        </div>
+    </div>
+
+    <!-- JavaScript-Dateien -->
+    <!-- Bootstrap Bundle JS (enthält Popper.js für Tooltips, Popovers etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Auth Controller für JWT-basierte Authentifizierung -->
+    <script type="module" src="../../../controllers/authController.js"></script>
+    <!-- Login-spezifische Logik -->
+    <script type="module">
+        import authController from '../../../controllers/authController.js';
+        
+        // Login-Formular Event Listener
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                const result = await authController.login(username, password);
+                
+                if (result.success) {
+                    // Weiterleitung zum Dashboard
+                    window.location.href = '../dashboard/dashboard.html';
+                } else {
+                    // Fehler anzeigen
+                    showAlert(result.message || 'Login fehlgeschlagen', 'danger');
+                }
+            });
+        });
+        
+        function showAlert(message, type) {
+            const alertContainer = document.querySelector('.alert-container');
+            alertContainer.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

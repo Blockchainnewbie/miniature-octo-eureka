@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Test - Navaro Car Monitoring</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .test-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        }
+        .test-form {
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        button {
+            background: #00c851;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background: #007E33;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .success {
+            background: rgba(0, 200, 81, 0.3);
+        }
+        .error {
+            background: rgba(255, 69, 58, 0.3);
+        }
+        .log {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚗 Navaro Car Monitoring - Login Integration Test</h1>
+        
+        <div class="test-form">
+            <div class="form-group">
+                <label for="testUser">Test-Benutzer:</label>
+                <select id="testUser">
+                    <option value="admin:password">admin / password (Admin)</option>
+                    <option value="user:password">user / password (User)</option>
+                    <option value="sonny:dkoe45ndo,EE.p0">sonny / dkoe45ndo,EE.p0 (Admin)</option>
+                </select>
+            </div>
+            
+            <button onclick="testLogin()">🔐 Login Test</button>
+            <button onclick="testProtectedRoute()">🛡️ Protected Route Test</button>
+            <button onclick="testLogout()">🚪 Logout Test</button>
+            <button onclick="clearLog()">🗑️ Log löschen</button>
+        </div>
+        
+        <div id="result" class="result" style="display: none;">
+            <h3>Test Ergebnis:</h3>
+            <div id="log" class="log"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Auth Service Import
+        import { authService } from './src/services/authService.js';
+        import { authStore } from './src/stores/auth/authStore.js';
+
+        let accessToken = null;
+
+        function log(message, type = 'info') {
+            const resultDiv = document.getElementById('result');
+            const logDiv = document.getElementById('log');
+            
+            resultDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                resultDiv.className = 'result success';
+            } else if (type === 'error') {
+                resultDiv.className = 'result error';
+            } else {
+                resultDiv.className = 'result';
+            }
+            
+            const timestamp = new Date().toLocaleTimeString();
+            logDiv.textContent += `[${timestamp}] ${message}\n`;
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        window.testLogin = async function() {
+            const testUser = document.getElementById('testUser').value;
+            const [username, password] = testUser.split(':');
+            
+            log(`🔄 Teste Login für Benutzer: ${username}`, 'info');
+            
+            try {
+                const result = await authService.login(username, password);
+                
+                if (result.success) {
+                    accessToken = result.data.access_token;
+                    authStore.setTokens(result.data.access_token, null);
+                    
+                    log(`✅ Login erfolgreich!`, 'success');
+                    log(`👤 Benutzer: ${result.data.user.username} (${result.data.user.role})`);
+                    log(`🔑 Access Token: ${accessToken.substring(0, 50)}...`);
+                    log(`📅 Erstellt: ${result.data.user.created_at}`);
+                } else {
+                    log(`❌ Login fehlgeschlagen: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`💥 Fehler beim Login: ${error.message}`, 'error');
+                console.error('Login Error:', error);
+            }
+        };
+
+        window.testProtectedRoute = async function() {
+            if (!accessToken) {
+                log(`⚠️ Kein Access Token verfügbar. Bitte zuerst einloggen.`, 'error');
+                return;
+            }
+            
+            log(`🔄 Teste geschützte Route...`, 'info');
+            
+            try {
+                const response = await fetch('/api/auth/protected', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'include'
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log(`✅ Geschützte Route erfolgreich aufgerufen!`, 'success');
+                    log(`📨 Antwort: ${data.message}`);
+                    if (data.user) {
+                        log(`👤 Authentifizierter Benutzer: ${data.user.username}`);
+                    }
+                } else {
+                    log(`❌ Zugriff auf geschützte Route verweigert: ${data.error || data.message}`, 'error');
+                }
+            } catch (error) {
+                log(`💥 Fehler beim Zugriff auf geschützte Route: ${error.message}`, 'error');
+                console.error('Protected Route Error:', error);
+            }
+        };
+
+        window.testLogout = async function() {
+            log(`🔄 Teste Logout...`, 'info');
+            
+            try {
+                const result = await authService.logout();
+                
+                if (result.success) {
+                    accessToken = null;
+                    authStore.clearTokens();
+                    log(`✅ Logout erfolgreich!`, 'success');
+                    log(`🔓 Alle Tokens wurden gelöscht`);
+                } else {
+                    log(`❌ Logout fehlgeschlagen: ${result.message}`, 'error');
+                }
+            } catch (error) {
+                log(`💥 Fehler beim Logout: ${error.message}`, 'error');
+                console.error('Logout Error:', error);
+            }
+        };
+
+        window.clearLog = function() {
+            document.getElementById('log').textContent = '';
+            document.getElementById('result').style.display = 'none';
+        };
+
+        // Automatischer Test beim Laden der Seite
+        document.addEventListener('DOMContentLoaded', () => {
+            log(`🚀 Navaro Car Monitoring - Login Integration Test gestartet`, 'info');
+            log(`🔗 Backend: http://localhost:5000`);
+            log(`🌐 Frontend: http://localhost:5173`);
+            log(`📊 Verfügbare Tests: Login, Protected Route, Logout`);
+            log(`⚡ Bereit für Tests!`);
+        });
+    </script>
+</body>
+</html>

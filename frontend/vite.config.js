@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 5173, // Standard-Port von Vite
     proxy: {
-      '/api': 'http://localhost:5001', // alle /api-Requests zum Flask-Backend
+      '/api': 'http://localhost:5000', // alle /api-Requests zum Flask-Backend
     },
   },
 })

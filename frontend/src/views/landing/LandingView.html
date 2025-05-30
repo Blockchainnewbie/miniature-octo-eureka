@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVARO - Where Humans Can't, Navaro Can</title>
+    <!-- Vue.js CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts für futuristische Schriftarten -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="../../../main.css">
+    <!-- Custom CSS Variablen für Neon-Effekte -->
+    <style>
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-pink: #ff00ff;
+            --text-secondary: #a0a0a0;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .landing-container {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .cta-section {
+            margin-top: 3rem;
+        }
+        
+        .btn-neon {
+            background: transparent;
+            border: 2px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+        
+        .btn-neon:hover {
+            background: var(--neon-cyan);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-cyan), inset 0 0 20px rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .btn-neon.secondary {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+        }
+        
+        .btn-neon.secondary:hover {
+            background: var(--neon-pink);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-pink), inset 0 0 20px rgba(255, 0, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Background Effects Component -->
+        <background-effects></background-effects>
+        
+        <!-- Main Landing Container -->
+        <div class="landing-container">
+            <div class="container">
+                <!-- Hero Content Component -->
+                <hero-content></hero-content>
+                
+                <!-- Call to Action Section -->
+                <div class="cta-section">
+                    <a href="../auth/login.html" class="btn-neon">
+                        <i class="fas fa-sign-in-alt me-2"></i>
+                        Mission Control Access
+                    </a>
+                    <a href="#features" class="btn-neon secondary">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Learn More
+                    </a>
+                </div>
+                
+                <!-- Feature Cards Component -->
+                <section id="features">
+                    <feature-cards></feature-cards>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vue App Script -->
+    <script type="module">
+        const { createApp } = Vue;
+
+        // Import Vue-Komponenten (simuliert für Demo)
+        const BackgroundEffects = {
+            template: `
+                <div>
+                    <div class="bg-animation"></div>
+                    <div class="grid-overlay"></div>
+                </div>
+            `,
+            style: `
+                .bg-animation {
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100%; height: 100%;
+                    background: linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.05) 50%, transparent 70%),
+                                linear-gradient(-45deg, transparent 30%, rgba(255, 0, 255, 0.05) 50%, transparent 70%);
+                    background-size: 200% 200%;
+                    animation: bgMove 20s ease infinite;
+                    z-index: -2;
+                }
+                @keyframes bgMove {
+                    0%, 100% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                }
+                .grid-overlay {
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100%; height: 100%;
+                    background-image: linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                                      linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+                    background-size: 50px 50px;
+                    z-index: -1;
+                    opacity: 0.3;
+                }
+            `
+        };
+
+        const HeroContent = {
+            data() {
+                return {
+                    title: '',
+                    subtitle: 'Where Humans Can\'t, Navaro Can',
+                    description: 'Navigate. Rescue. Repeat.\\nAutonomous rescue vehicle designed for extreme terrain and hazardous environments. When every second counts, NAVARO delivers hope where humans cannot reach.',
+                    fullTitle: 'NAVARO',
+                    titleIndex: 0
+                };
+            },
+            template: `
+                <div class="hero-content">
+                    <h1 class="hero-title">{{ title }}</h1>
+                    <p class="hero-subtitle">{{ subtitle }}</p>
+                    <p class="hero-description">{{ description }}</p>
+                </div>
+            `,
+            mounted() {
+                this.typewriterEffect();
+            },
+            methods: {
+                typewriterEffect() {
+                    this.title = '';
+                    this.titleIndex = 0;
+                    
+                    const typeChar = () => {
+                        if (this.titleIndex < this.fullTitle.length) {
+                            this.title += this.fullTitle.charAt(this.titleIndex);
+                            this.titleIndex++;
+                            setTimeout(typeChar, 150);
+                        }
+                    };
+                    
+                    setTimeout(typeChar, 500);
+                }
+            }
+        };
+
+        const FeatureCards = {
+            data() {
+                return {
+                    features: [
+                        {
+                            id: 1,
+                            icon: '🔍',
+                            title: 'Advanced Navigation',
+                            description: 'KI-gesteuerte Navigation durch schwieriges Gelände und gefährliche Umgebungen.'
+                        },
+                        {
+                            id: 2,
+                            icon: '🚁',
+                            title: 'Autonomous Operation',
+                            description: 'Vollständig autonomer Betrieb ohne menschliches Eingreifen in kritischen Situationen.'
+                        },
+                        {
+                            id: 3,
+                            icon: '📡',
+                            title: 'Real-time Communication',
+                            description: 'Kontinuierliche Echtzeitkommunikation und Statusupdates während der Mission.'
+                        }
+                    ]
+                };
+            },
+            template: `
+                <div class="row g-3 mt-4">
+                    <div class="col-md-4" v-for="feature in features" :key="feature.id">
+                        <div class="feature-card">
+                            <div class="feature-icon">{{ feature.icon }}</div>
+                            <h3 class="feature-title">{{ feature.title }}</h3>
+                            <p>{{ feature.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            `
+        };
+
+        // Vue App erstellen
+        createApp({
+            components: {
+                BackgroundEffects,
+                HeroContent,
+                FeatureCards
+            }
+        }).mount('#app');
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
